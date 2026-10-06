@@ -37,6 +37,9 @@ class Settings(BaseSettings):
 
     # ---- Retrieval / policy ----
     top_k: int = 5
+    # best-chunk cosine distance above this => KB does not cover the question (not_found),
+    # so we never invent an answer from an irrelevant chunk (R2). A config we can tune.
+    relevance_max_distance: float = 0.58
     critic_min_groundedness: float = 0.6
     # critic groundedness: deterministic overlap (default — reliable, fast) or LLM
     # self-critique. On small local models the LLM judge over-escalates grounded

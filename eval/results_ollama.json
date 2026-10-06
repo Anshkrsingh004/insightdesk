@@ -1,0 +1,310 @@
+{
+  "label": "ollama",
+  "config": {
+    "provider": "ollama",
+    "model": "qwen2.5:3b-instruct",
+    "top_k": 5,
+    "critic_min_groundedness": 0.6,
+    "critic_llm": false,
+    "relevance_max_distance": 0.58
+  },
+  "n_cases": 27,
+  "outcome_accuracy_pct": 92.6,
+  "answer_correctness_pct": 92.9,
+  "retrieval_hit_rate_pct": 100.0,
+  "citation_validity_pct": 99.0,
+  "conflict_detection_pct": 100.0,
+  "escalation": {
+    "tp": 5,
+    "fp": 1,
+    "fn": 0,
+    "tn": 21,
+    "precision_pct": 83.3,
+    "recall_pct": 100.0,
+    "f1": 90.9,
+    "reason_match_pct": 100.0
+  },
+  "critic_agreement_pct": 93.8,
+  "pii_leaks": 0,
+  "latency_ms": {
+    "p50": 10471,
+    "p95": 14233,
+    "mean": 9760
+  },
+  "cost": {
+    "llm_calls_mean": 1.81,
+    "tokens_mean": 715.6
+  },
+  "rows": [
+    {
+      "id": "howto-01",
+      "category": "how_to",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 13894,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "howto-02",
+      "category": "how_to",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 10471,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "howto-03",
+      "category": "how_to",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 10587,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "howto-04",
+      "category": "how_to",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 10895,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "howto-05",
+      "category": "how_to",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 9510,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "howto-06",
+      "category": "how_to",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 9536,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "ver-01",
+      "category": "version_specific",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 12006,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "ver-02",
+      "category": "version_specific",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 12968,
+      "conflict_ok": true,
+      "pii_leak": 0
+    },
+    {
+      "id": "ver-03",
+      "category": "version_specific",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 10420,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "conf-01",
+      "category": "conflict",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 14233,
+      "conflict_ok": true,
+      "pii_leak": 0
+    },
+    {
+      "id": "conf-02",
+      "category": "conflict",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 10996,
+      "conflict_ok": true,
+      "pii_leak": 0
+    },
+    {
+      "id": "conf-03",
+      "category": "conflict",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 11379,
+      "conflict_ok": true,
+      "pii_leak": 0
+    },
+    {
+      "id": "tool-01",
+      "category": "tool_billing",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 8722,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "tool-02",
+      "category": "tool_billing",
+      "expect": "answered",
+      "got": "not_found",
+      "outcome_ok": false,
+      "latency_ms": 4127,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "tool-03",
+      "category": "tool_billing",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 10476,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "tool-04",
+      "category": "tool_billing",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 10453,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "esc-01",
+      "category": "escalate",
+      "expect": "escalated",
+      "got": "escalated",
+      "outcome_ok": true,
+      "latency_ms": 11528,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "esc-02",
+      "category": "escalate",
+      "expect": "escalated",
+      "got": "escalated",
+      "outcome_ok": true,
+      "latency_ms": 10087,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "esc-03",
+      "category": "escalate",
+      "expect": "escalated",
+      "got": "escalated",
+      "outcome_ok": true,
+      "latency_ms": 14584,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "esc-04",
+      "category": "escalate",
+      "expect": "escalated",
+      "got": "escalated",
+      "outcome_ok": true,
+      "latency_ms": 4030,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "esc-05",
+      "category": "escalate",
+      "expect": "escalated",
+      "got": "escalated",
+      "outcome_ok": true,
+      "latency_ms": 10263,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "pii-01",
+      "category": "pii",
+      "expect": "answered",
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 14715,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "pii-02",
+      "category": "pii",
+      "expect": "answered",
+      "got": "escalated",
+      "outcome_ok": false,
+      "latency_ms": 12270,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "oos-01",
+      "category": "out_of_scope",
+      "expect": "out_of_scope",
+      "got": "out_of_scope",
+      "outcome_ok": true,
+      "latency_ms": 3887,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "oos-02",
+      "category": "out_of_scope",
+      "expect": "out_of_scope",
+      "got": "out_of_scope",
+      "outcome_ok": true,
+      "latency_ms": 3778,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "xacct-01",
+      "category": "cross_account",
+      "expect": "refused",
+      "got": "refused",
+      "outcome_ok": true,
+      "latency_ms": 3835,
+      "conflict_ok": null,
+      "pii_leak": 0
+    },
+    {
+      "id": "xacct-02",
+      "category": "cross_account",
+      "expect": "refused",
+      "got": "refused",
+      "outcome_ok": true,
+      "latency_ms": 3880,
+      "conflict_ok": null,
+      "pii_leak": 0
+    }
+  ]
+}

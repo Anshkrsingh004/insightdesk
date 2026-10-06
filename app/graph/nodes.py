@@ -144,9 +144,12 @@ def _normalize_intent(intent: dict, msg: str) -> dict:
              "chargeback", "billing dispute", "money back"):
         intent["type"] = "complaint" if has("manager", "unacceptable", "third time",
                                              "furious", "ridiculous", "fed up") else "billing"
-    if has("manager", "speak to a human", "real person", "talk to someone",
-           "get me a human", "human agent"):
-        intent["explicit_human_request"] = True
+    # Own this signal deterministically — the small model over-reports it. Keyword
+    # present => True, absent => False (override the LLM either way).
+    intent["explicit_human_request"] = has(
+        "manager", "speak to a human", "speak to someone", "real person",
+        "talk to someone", "talk to a person", "get me a human", "human agent",
+        "live agent", "speak with a human")
     if has("unacceptable", "ridiculous", "furious", "third time", "fed up", "get me a manager"):
         intent["sentiment"] = "angry"
     return intent
@@ -176,6 +179,15 @@ def retrieve(state: dict) -> dict:
     hits = vs.query(state.get("message", ""), n_results=max(12, s.top_k * 3))
     pr = prec.apply_precedence(hits, customer_version, as_of)
 
+    # Relevance gate (R2): if even the best authoritative chunk is too dissimilar, the KB
+    # doesn't cover this -> drop grounding so compose returns not_found (never invent).
+    authoritative = pr.authoritative[: s.top_k]
+    if authoritative:
+        best = min((c.get("distance") if c.get("distance") is not None else 9e9)
+                   for c in authoritative)
+        if best > s.relevance_max_distance:
+            authoritative = []
+
     precedence_dict = {
         "authoritative": [{"source_id": c["metadata"].get("source_id"),
                            "section": c["metadata"].get("section"),
@@ -184,7 +196,7 @@ def retrieve(state: dict) -> dict:
                            "product_versions": c["metadata"].get("product_versions"),
                            "last_updated": c["metadata"].get("last_updated"),
                            "distance": c.get("distance"),
-                           "text": c["text"]} for c in pr.authoritative[: s.top_k]],
+                           "text": c["text"]} for c in authoritative],
         "supporting": [{"source_id": c["metadata"].get("source_id"),
                         "outdated": c["metadata"].get("outdated")} for c in pr.supporting],
         "conflicts": pr.conflicts,
@@ -512,8 +524,9 @@ def _customer_summary(state: dict) -> str:
 def decide(state: dict) -> dict:
     intent = state.get("intent") or {}
     crit = state.get("critic") or {}
-    pr = state.get("precedence", {})
-    has_grounding = bool(pr.get("authoritative"))
+    # Grounded if compose produced an answer from docs OR tools; "not covered" only when
+    # compose itself returned not_found.
+    has_grounding = state.get("answer_type") != "not_found"
     threshold, _cite = policy.get_critic_threshold()
 
     decision = esc.decide(
