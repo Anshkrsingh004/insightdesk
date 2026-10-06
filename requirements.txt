@@ -1,23 +1,24 @@
 # --- Core API (mandated: FastAPI + Uvicorn + Pydantic v2) ---
-fastapi==0.115.6
-uvicorn[standard]==0.34.0
-pydantic==2.10.4
-pydantic-settings==2.7.1
-python-multipart==0.0.20   # POST /ingest multipart
-httpx==0.28.1              # Ollama / cloud LLM calls (no heavy SDKs)
+fastapi>=0.115,<0.116
+uvicorn[standard]>=0.30
+pydantic>=2.10
+pydantic-settings>=2.6
+python-multipart>=0.0.18   # POST /ingest multipart
+httpx>=0.27                # Ollama / cloud LLM calls (no heavy SDKs)
 
 # --- Orchestration (mandated: LangGraph) ---
-langgraph==0.2.60
+langgraph>=0.2.60,<0.3
 
 # --- Vector store (mandated: ChromaDB, persisted) ---
-chromadb==0.5.23           # ships ONNX all-MiniLM-L6-v2 embedding (no torch needed)
+# chromadb 1.5.x ships prebuilt wheels incl. a native HNSW index (no chroma-hnswlib
+# C++ build) AND bundles onnxruntime + tokenizers -> all-MiniLM-L6-v2 embedder works
+# with no compiler and no torch. (0.5.x pulled chroma-hnswlib which needs MSVC.)
+chromadb>=1.5,<2
 
 # --- Data / eval ---
-pandas==2.2.3
+pandas>=2.2
 
 # --- UI (mandated: Streamlit) ---
-streamlit==1.41.1
+streamlit>=1.40
 
-# Optional heavy path (same all-MiniLM-L6-v2 weights via the library form).
-# Installs torch (~2GB); only needed if EMBEDDINGS=sentence-transformers.
-# See requirements-ml.txt
+# Optional heavy path: library-form embeddings -> see requirements-ml.txt (installs torch).

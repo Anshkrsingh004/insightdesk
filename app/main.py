@@ -11,9 +11,14 @@ from .api.routes import router
 from .db import init_db
 
 
+# Idempotent (CREATE TABLE IF NOT EXISTS): guarantees the schema exists even if a
+# route is exercised before the ASGI lifespan fires (e.g. some TestClient setups).
+init_db()
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_db()  # ensure Annex C schema exists
+    init_db()  # ensure Annex C schema exists (also on normal uvicorn startup)
     yield
 
 
