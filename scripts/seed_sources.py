@@ -9,7 +9,6 @@ Run:  python scripts/seed_sources.py
 from __future__ import annotations
 
 import csv
-import json
 import sys
 from pathlib import Path
 
@@ -24,13 +23,10 @@ COLS = ["source_id", "doc_type", "title", "authority_level", "product_versions",
 
 
 def body_for(source_id: str, doc_type: str) -> str:
+    # Tickets are stored as raw JSON (parsed at index time, same path as live /ingest).
     if doc_type == "ticket":
         p = KB / "tickets" / f"{source_id}.json"
-        if p.exists():
-            t = json.loads(p.read_text(encoding="utf-8"))
-            return (f"{t.get('subject','')}\n\nCustomer: {t.get('customer_question','')}\n\n"
-                    f"Resolution: {t.get('resolution','')}\n\nTags: {', '.join(t.get('tags', []))}")
-        return ""
+        return p.read_text(encoding="utf-8") if p.exists() else ""
     p = KB / "articles" / f"{source_id}.md"
     return p.read_text(encoding="utf-8") if p.exists() else ""
 

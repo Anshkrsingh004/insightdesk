@@ -49,11 +49,19 @@ and the sources it must be based on, return JSON:
   decision: answer | revise | escalate
 Judge ONLY grounding and coverage. Do not consider PII or policy here."""
 
-# unapproved-action promises that must never reach the customer (code-detected policy risk)
+# Unapproved-action promises that must NEVER reach the customer. This is the code
+# backstop that catches a refund/credit/account-change promise even if a weak model is
+# tricked into drafting one (prompt injection) — policy_risk=high -> escalate, so the
+# promise is replaced by the calm escalation message. Tuned to avoid matching safe policy
+# explanations like "refunds are approved by billing".
 _PROMISE = re.compile(
-    r"\b(i(?:['’]ve| have| will| can)?\s*(refund(ed)?|credit(ed)?|cancel(l?ed)?|"
-    r"upgrad(e|ed)|downgrad(e|ed)|issu(e|ed)\s+(a\s+)?refund)|refund (has been|is) (issued|processed)|"
-    r"your account (has been|is) (cancelled|canceled|upgraded|credited))\b",
+    r"(\brefunded\b.{0,25}\byour\s+(card|account)\b"
+    r"|\brefund(ed)?\b.{0,20}\b(has been|was|is|now)\s+(approved|processed|issued)\b"
+    r"|\bapproved\b[:\s].{0,20}\$?\d[\d,. ]*\s*refund"
+    r"|\$\s?\d[\d,.]*\s*(has been |was )?(refunded|credited)\b"
+    r"|\bi(?:['’]ve| have| will| ll| can| can now| am going to)?\s+(refund|credit|cancel|cancelled|"
+    r"upgrade|downgrade|reset)\s+(you|your)\b"
+    r"|\byour account (has been|is|will be) (cancelled|canceled|upgraded|downgraded|credited|closed|deleted)\b)",
     re.IGNORECASE,
 )
 
@@ -553,39 +561,52 @@ def finalize(state: dict) -> dict:
     latency_ms = int((time.time() - state.get("t_start", time.time())) * 1000)
     llm_calls = llm.calls - state.get("llm_calls_start", 0)
 
-    audit = {
+    # --- Global PII/secret redaction (R9): responses, bundles AND logs carry none ---
+    raw_answer = state.get("answer", "")
+    raw_msg = state.get("message", "")
+    red_answer = pii.redact(raw_answer)
+    red_tools = pii.redact_obj(state.get("tools_invoked", []))
+    red_msg = pii.redact(raw_msg)
+    pii_flag = (bool(state.get("pii_redacted")) or red_answer != raw_answer
+                or bool(pii.detect(raw_msg)))
+
+    route = state.get("route", []) + ["finalize"]
+    audit = pii.redact_obj({
         "trace_id": state.get("trace_id"),
         "conversation_id": state.get("conversation_id"),
         "account_id": state.get("account_id"),
         "as_of_date": state.get("as_of_date"),
         "intent": state.get("intent"),
-        "route": state.get("route", []) + ["finalize"],
+        "route": route,
         "sources_retrieved": [c["metadata"].get("source_id") for c in state.get("candidates", [])],
         "precedence": state.get("precedence"),
-        "tools_invoked": state.get("tools_invoked", []),
+        "tools_invoked": red_tools,
         "critic": state.get("critic"),
         "answer_type": state.get("answer_type"),
         "conflicts_detected": state.get("conflicts", []),
+        "escalation_reasons": state.get("esc_reasons", []),
         "handoff_id": state.get("handoff_id"),
+        "pii_redacted": pii_flag,
         "model": s.ollama_model if llm.provider == "ollama" else llm.provider,
         "llm_provider": llm.provider,
         "latency_ms": latency_ms,
         "llm_calls": llm_calls,
         "tokens": llm.last_tokens,
-    }
+    })
     with connection() as conn:
         conn.execute("INSERT OR IGNORE INTO conversations (conversation_id, account_id, created_at) "
                      "VALUES (?,?,datetime('now'))",
                      (state.get("conversation_id"), state.get("account_id")))
         conn.execute("INSERT INTO messages (conversation_id, role, content, created_at) "
                      "VALUES (?,?,?,datetime('now'))",
-                     (state.get("conversation_id"), "customer", state.get("message", "")))
+                     (state.get("conversation_id"), "customer", red_msg))  # redacted in logs
         conn.execute("INSERT INTO messages (conversation_id, role, content, answer_type, route_json, "
                      "trace_id, created_at) VALUES (?,?,?,?,?,?,datetime('now'))",
-                     (state.get("conversation_id"), "assistant", state.get("answer", ""),
-                      state.get("answer_type"), json.dumps(audit["route"]), state.get("trace_id")))
+                     (state.get("conversation_id"), "assistant", red_answer,
+                      state.get("answer_type"), json.dumps(route), state.get("trace_id")))
         conn.execute("INSERT OR REPLACE INTO audit_records (trace_id, conversation_id, account_id, "
                      "created_at, record_json) VALUES (?,?,?,datetime('now'),?)",
                      (state.get("trace_id"), state.get("conversation_id"),
                       state.get("account_id"), json.dumps(audit)))
-    return {"route": audit["route"]}
+    return {"answer": red_answer, "tools_invoked": red_tools, "pii_redacted": pii_flag,
+            "route": route}

@@ -6,15 +6,17 @@ from __future__ import annotations
 import json
 import uuid
 
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, File, Form, Header, HTTPException, UploadFile
 from typing import Optional
 
 from ..config import get_settings, today_str
 from ..db import connection, healthcheck as db_ok
 from ..llm import get_llm
 from ..graph.build import run_support
+from ..retrieval.ingest import add_source
 from ..schemas import (
-    Citation, HealthStatus, IntentPublic, SupportRequest, SupportResponse,
+    Citation, HealthStatus, IngestResult, IntentPublic, SourceMeta,
+    SupportRequest, SupportResponse,
 )
 
 router = APIRouter()
@@ -84,11 +86,33 @@ def support(req: SupportRequest, x_account_id: Optional[str] = Header(default=No
 
 
 # ---------------------------------------------------------------------------
-# POST /ingest — placeholder (Phase 3)
+# POST /ingest — add an article or ticket while running (R12). Multipart:
+#   metadata : JSON string with Annex B Source Register fields
+#   content  : markdown article OR JSON ticket (form field), or uploaded `file`
+# Indexed immediately and searchable on the next /support call.
 # ---------------------------------------------------------------------------
-@router.post("/ingest")
-def ingest() -> dict:
-    return {"ok": False, "message": "Ingestion wired in Phase 3."}
+@router.post("/ingest", response_model=IngestResult)
+async def ingest(
+    metadata: str = Form(...),
+    content: Optional[str] = Form(None),
+    file: Optional[UploadFile] = File(None),
+) -> IngestResult:
+    try:
+        meta = json.loads(metadata)
+    except Exception:
+        raise HTTPException(status_code=400, detail="metadata must be a JSON object")
+    body = content
+    if file is not None:
+        body = (await file.read()).decode("utf-8")
+    if not body:
+        raise HTTPException(status_code=400, detail="provide `content` form field or a `file`")
+    try:
+        sm = SourceMeta(**meta)
+    except Exception as e:
+        raise HTTPException(status_code=422, detail=f"invalid Source Register metadata: {e}")
+    n = add_source(sm.model_dump(), body)
+    return IngestResult(ok=True, source_id=sm.source_id, chunks_indexed=n,
+                        message="indexed and searchable immediately")
 
 
 # ---------------------------------------------------------------------------

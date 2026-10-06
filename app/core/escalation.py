@@ -20,7 +20,7 @@ class EscalationDecision:
 
 
 # message-level signals for the specific escalation-worthy intents (Annex A.3 bullet 2)
-_REFUND = re.compile(r"\b(refund|credit|money back|charge\s?back|reimburse)\b", re.I)
+_REFUND = re.compile(r"\b(refund(s|ed|ing)?|credit(s|ed)?|money back|charge\s?back|reimburse)\b", re.I)
 _DISPUTE = re.compile(r"\b(charged\s+(me\s+|you\s+|us\s+)?twice|twice this month|double[- ]?charged|"
                       r"duplicate charge|wrong charge|overcharged|billing dispute)\b", re.I)
 _DELETION = re.compile(r"\b(delete|close|cancel)\s+(my\s+)?account\b", re.I)
