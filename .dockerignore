@@ -1,0 +1,12 @@
+.venv/
+venv/
+__pycache__/
+*.pyc
+.git/
+storage/
+.chroma/
+*.db
+.env
+.cache/
+models/
+eval/results_*.json

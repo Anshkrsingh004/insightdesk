@@ -1,0 +1,161 @@
+{
+  "handoff_id": "H-423453",
+  "conversation_id": "C-f1c830",
+  "account_id": "A1005",
+  "queue": "billing",
+  "priority": "urgent",
+  "created_at": "2026-10-06 10:49:00",
+  "bundle": {
+    "queue": "billing",
+    "priority": "urgent",
+    "intent": "billing",
+    "urgency": "high",
+    "sentiment": "angry",
+    "escalation_reasons": [
+      "refund_or_credit",
+      "billing_dispute",
+      "explicit_human_request",
+      "strong_negative_sentiment",
+      "repeated_contact"
+    ],
+    "customer_summary": "Third time writing! You charged me twice this month. Get me a manager now!",
+    "evidence": [
+      {
+        "tool": "send_password_reset",
+        "output": {
+          "sent": true,
+          "channel": "email",
+          "note": "A password-reset link was sent to the account owner's email on file. The link and token are never shown in chat (R9)."
+        }
+      },
+      {
+        "tool": "check_platform_status",
+        "output": [
+          {
+            "component": "api",
+            "status": "operational",
+            "incident_id": "",
+            "updated_at": "2026-10-06T08:00:00Z"
+          },
+          {
+            "component": "workflow-engine",
+            "status": "operational",
+            "incident_id": "",
+            "updated_at": "2026-10-06T08:00:00Z"
+          },
+          {
+            "component": "connectors",
+            "status": "degraded",
+            "incident_id": "INC-2041",
+            "updated_at": "2026-10-06T07:30:00Z"
+          },
+          {
+            "component": "billing",
+            "status": "operational",
+            "incident_id": "",
+            "updated_at": "2026-10-06T08:00:00Z"
+          }
+        ]
+      },
+      {
+        "tool": "lookup_account",
+        "output": {
+          "account_id": "A1005",
+          "company_name": "Umbrella Health",
+          "plan": "Business",
+          "status": "active",
+          "product_version": "4.3",
+          "created_at": "2026-01-15"
+        }
+      },
+      {
+        "tool": "get_invoices",
+        "output": [
+          {
+            "invoice_id": "INV-6006",
+            "account_id": "A1005",
+            "amount": 199.0,
+            "currency": "USD",
+            "charged_on": "2026-10-01",
+            "status": "paid",
+            "failure_reason": "",
+            "card_last4": "8935"
+          },
+          {
+            "invoice_id": "INV-6007",
+            "account_id": "A1005",
+            "amount": 199.0,
+            "currency": "USD",
+            "charged_on": "2026-10-01",
+            "status": "paid",
+            "failure_reason": "",
+            "card_last4": "1424"
+          }
+        ]
+      },
+      {
+        "tool": "check_refund_eligibility",
+        "output": {
+          "refund_window_days": 14,
+          "policy_citation": {
+            "rule_id": "REFUND-WINDOW-01",
+            "source_id": "KB-POL-REFUND-001",
+            "source_section": "Refund window"
+          },
+          "as_of_date": "2026-10-06",
+          "invoices": [
+            {
+              "invoice_id": "INV-6006",
+              "amount": 199.0,
+              "currency": "USD",
+              "charged_on": "2026-10-01",
+              "status": "paid",
+              "days_since_charge": 5,
+              "within_window": true,
+              "eligible_for_review": true
+            },
+            {
+              "invoice_id": "INV-6007",
+              "amount": 199.0,
+              "currency": "USD",
+              "charged_on": "2026-10-01",
+              "status": "paid",
+              "days_since_charge": 5,
+              "within_window": true,
+              "eligible_for_review": true
+            }
+          ],
+          "note": "Eligibility checked by tool. Refunds are approved and issued by a human, never by the assistant."
+        }
+      },
+      {
+        "source_id": "KB-ACC-USAGE-001",
+        "section": "Overview"
+      },
+      {
+        "source_id": "KB-BIL-DUP-001",
+        "section": "Overview"
+      },
+      {
+        "source_id": "KB-BIL-UPG-001",
+        "section": "Steps"
+      },
+      {
+        "source_id": "KB-BIL-FAILED-001",
+        "section": "Steps"
+      },
+      {
+        "source_id": "KB-POL-ESCALATION-001",
+        "section": "Registry values"
+      },
+      {
+        "source_id": "KB-POL-REFUND-001",
+        "section": "Refund window"
+      }
+    ],
+    "attempted_answer": "[KB-BIL-DUP-001] indicates that you have experienced duplicate charges on your invoice. Please follow the steps in [KB-BIL-UPG-001] to change your plan and verify the result. Since your account is on the Business plan and the duplicate charges occurred within the 14-day refund window, refunds are approved and issued by billing, not by you. Please ensure your billing information is up to date by following the steps in [KB-BIL-UPG-001]. If the issue persists, you may need to escalate the issue by following the steps in [KB-POL-ESCALATION-001]. Please note that the security response SLA is 4 hours, and the billing response SLA is 24 hours.",
+    "unresolved_questions": [
+      "Approve refund of INV-6006?"
+    ]
+  }
+}

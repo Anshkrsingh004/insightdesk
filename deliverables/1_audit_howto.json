@@ -1,0 +1,144 @@
+{
+  "trace_id": "a5f2f174",
+  "conversation_id": "C-ac3300",
+  "account_id": "A1001",
+  "as_of_date": "2026-10-06",
+  "intent": {
+    "type": "how_to",
+    "urgency": "low",
+    "sentiment": "neutral",
+    "pii_detected": false,
+    "tools_needed": [],
+    "confidence": 1.0,
+    "explicit_human_request": false
+  },
+  "route": [
+    "authorize",
+    "classify",
+    "retrieve",
+    "tools",
+    "compose",
+    "critic",
+    "decide",
+    "finalize"
+  ],
+  "sources_retrieved": [
+    "KB-API-EXPORT-001",
+    "KB-HOW-EXPORT-001",
+    "KB-API-EXPORT-001",
+    "KB-HOW-EXPORT-001",
+    "KB-HOW-EXPORT-001",
+    "TKT-2026-0709",
+    "KB-ADV-VERSIONS-001",
+    "KB-HOW-EXPORT-001",
+    "TKT-2025-0633",
+    "KB-API-EXPORT-001",
+    "KB-ADV-AUDIT-001",
+    "KB-API-EXPORT-001",
+    "TKT-2026-0713",
+    "RN-2026-09-01",
+    "TKT-2026-0717"
+  ],
+  "precedence": {
+    "authoritative": [
+      {
+        "source_id": "KB-API-EXPORT-001",
+        "section": "Related",
+        "doc_type": "article",
+        "authority_level": 1,
+        "product_versions": "3.x;4.x",
+        "last_updated": "2026-09-12",
+        "distance": 0.25060099363327026,
+        "text": "- RN-2026-09-01 Deprecation of the legacy v3 export API\n- KB-HOW-EXPORT-001 Export your workflow run history (UI)"
+      },
+      {
+        "source_id": "KB-HOW-EXPORT-001",
+        "section": "Overview",
+        "doc_type": "article",
+        "authority_level": 1,
+        "product_versions": "3.x;4.x",
+        "last_updated": "2026-09-10",
+        "distance": 0.25246602296829224,
+        "text": "You can export the run history of any workflow as a CSV for reporting or audits. The\nsteps differ between CloudFlow 3.x and 4.x."
+      },
+      {
+        "source_id": "KB-ADV-AUDIT-001",
+        "section": "Overview",
+        "doc_type": "article",
+        "authority_level": 1,
+        "product_versions": "4.x",
+        "last_updated": "2026-09-02",
+        "distance": 0.47775816917419434,
+        "text": "This article explains how to export admin audit logs for compliance in CloudFlow."
+      },
+      {
+        "source_id": "KB-ADV-VERSIONS-001",
+        "section": "Key differences",
+        "doc_type": "article",
+        "authority_level": 1,
+        "product_versions": "3.x;4.x",
+        "last_updated": "2026-09-01",
+        "distance": 0.3731088638305664,
+        "text": "| Area | CloudFlow 3.x | CloudFlow 4.x |\n|------|---------------|---------------|\n| Run history export | Activity \u2192 Download runs (90 days) | Run History \u2192 Export (full) |\n| Export API | `/api/v3/export/runs` (deprecated) | `/api/v4/.../runs/export` |\n| Salesforce CF-503 fix | Edit API version in step | Re-authorise connector |\n| Connectors UI | Integrations tab | Settings \u2192 Connectors |\n| Conditional branching | Basic | Advanced (nested, sub-workflows) |"
+      }
+    ],
+    "supporting": [
+      {
+        "source_id": "TKT-2026-0709",
+        "outdated": false
+      },
+      {
+        "source_id": "TKT-2025-0633",
+        "outdated": true
+      },
+      {
+        "source_id": "TKT-2026-0713",
+        "outdated": false
+      },
+      {
+        "source_id": "TKT-2026-0717",
+        "outdated": false
+      }
+    ],
+    "conflicts": [
+      {
+        "reason": "resolved ticket is outdated / contradicts current documentation; documentation wins",
+        "winner_source_id": "KB-API-EXPORT-001",
+        "loser_source_id": "TKT-2025-0633"
+      }
+    ],
+    "upcoming_deprecations": [],
+    "dropped": [
+      {
+        "source_id": "RN-2026-09-01",
+        "reason": "version 3.x != customer 4.3"
+      }
+    ]
+  },
+  "tools_invoked": [],
+  "critic": {
+    "groundedness": 0.72,
+    "coverage": "complete",
+    "pii_risk": "none",
+    "policy_risk": "none",
+    "decision": "answer",
+    "revisions": 0,
+    "notes": ""
+  },
+  "answer_type": "answered",
+  "conflicts_detected": [
+    {
+      "reason": "resolved ticket is outdated / contradicts current documentation; documentation wins",
+      "winner_source_id": "KB-API-EXPORT-001",
+      "loser_source_id": "TKT-2025-0633"
+    }
+  ],
+  "escalation_reasons": [],
+  "handoff_id": null,
+  "pii_redacted": false,
+  "model": "qwen2.5:3b-instruct",
+  "llm_provider": "ollama",
+  "latency_ms": 11042,
+  "llm_calls": 2,
+  "tokens": 729
+}

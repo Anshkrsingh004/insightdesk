@@ -1,0 +1,43 @@
+# docker compose up  -> API (:8000) + Streamlit UI (:8501).
+# Ollama runs on the HOST (reached via host.docker.internal). Stores persist in ./storage.
+# The API self-seeds on start (bootstrap is idempotent), so the stack works from a clean checkout.
+services:
+  api:
+    build: .
+    command: sh -c "python scripts/bootstrap.py && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    ports:
+      - "8000:8000"
+    environment:
+      - LLM_PROVIDER=ollama            # set to 'mock' to run without Ollama
+      - OLLAMA_HOST=http://host.docker.internal:11434
+      - OLLAMA_MODEL=qwen2.5:3b-instruct
+      - CRITIC_LLM=false
+      - EMBEDDINGS=onnx-minilm
+      - SQLITE_PATH=storage/insightdesk.db
+      - CHROMA_DIR=storage/chroma
+    volumes:
+      - ./storage:/app/storage
+      - ./kb:/app/kb
+      - ./synthetic:/app/synthetic
+      - model-cache:/root/.cache       # persist the all-MiniLM ONNX model between runs
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # lets the container reach host Ollama (Linux)
+    healthcheck:
+      test: ["CMD", "python", "-c", "import httpx;exit(0 if httpx.get('http://localhost:8000/health').json()['sqlite'] else 1)"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  ui:
+    build: .
+    command: streamlit run ui/streamlit_app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  model-cache:

@@ -1,0 +1,264 @@
+{
+  "trace_id": "18c5c564",
+  "conversation_id": "C-f1c830",
+  "account_id": "A1005",
+  "as_of_date": "2026-10-06",
+  "intent": {
+    "type": "billing",
+    "urgency": "high",
+    "sentiment": "angry",
+    "pii_detected": false,
+    "tools_needed": [
+      "send_password_reset",
+      "check_platform_status"
+    ],
+    "confidence": 1.0,
+    "explicit_human_request": true
+  },
+  "route": [
+    "authorize",
+    "classify",
+    "retrieve",
+    "tools",
+    "compose",
+    "critic",
+    "decide",
+    "escalate",
+    "finalize"
+  ],
+  "sources_retrieved": [
+    "TKT-2026-0820",
+    "TKT-2026-0845",
+    "KB-BIL-DUP-001",
+    "TKT-2026-0866",
+    "KB-ACC-USAGE-001",
+    "KB-BIL-DUP-001",
+    "KB-BIL-DUP-001",
+    "KB-ACC-USAGE-001",
+    "TKT-2026-0714",
+    "TKT-2026-0707",
+    "KB-POL-ESCALATION-001",
+    "KB-POL-REFUND-001",
+    "TKT-2026-0716",
+    "KB-BIL-UPG-001",
+    "KB-BIL-FAILED-001"
+  ],
+  "precedence": {
+    "authoritative": [
+      {
+        "source_id": "KB-ACC-USAGE-001",
+        "section": "Overview",
+        "doc_type": "article",
+        "authority_level": 1,
+        "product_versions": "all",
+        "last_updated": "2026-09-08",
+        "distance": 0.6527882814407349,
+        "text": "See how much of your plan you've used this month under **Settings \u2192 Usage**."
+      },
+      {
+        "source_id": "KB-BIL-DUP-001",
+        "section": "Overview",
+        "doc_type": "article",
+        "authority_level": 1,
+        "product_versions": "all",
+        "last_updated": "2026-09-05",
+        "distance": 0.5706429481506348,
+        "text": "# Duplicate charges on your invoice\n\n_CloudFlow help center \u00b7 Account & billing \u00b7 applies to all_"
+      },
+      {
+        "source_id": "KB-BIL-UPG-001",
+        "section": "Steps",
+        "doc_type": "article",
+        "authority_level": 1,
+        "product_versions": "all",
+        "last_updated": "2026-09-02",
+        "distance": 0.7492843270301819,
+        "text": "1. Open **Settings \u2192 Billing**.\n2. Follow the on-screen prompts to change plans; limits apply immediately and billing is prorated.\n3. Save your changes and verify the result."
+      },
+      {
+        "source_id": "KB-BIL-FAILED-001",
+        "section": "Steps",
+        "doc_type": "article",
+        "authority_level": 1,
+        "product_versions": "all",
+        "last_updated": "2026-09-02",
+        "distance": 0.755983293056488,
+        "text": "1. Open **Settings \u2192 Billing**.\n2. Follow the on-screen prompts to update your card to clear a failed charge and restore active status.\n3. Save your changes and verify the result."
+      },
+      {
+        "source_id": "KB-POL-ESCALATION-001",
+        "section": "Registry values",
+        "doc_type": "policy",
+        "authority_level": 1,
+        "product_versions": "all",
+        "last_updated": "2026-08-01",
+        "distance": 0.727897584438324,
+        "text": "- `critic_min_groundedness = 0.6` (CRITIC-MIN-GROUNDEDNESS-01)\n- `billing_response_sla_hours = 24` (ESCALATION-SLA-BILLING-01)\n- `security_response_sla_hours = 4` (ESCALATION-SLA-SECURITY-01)"
+      }
+    ],
+    "supporting": [
+      {
+        "source_id": "TKT-2026-0820",
+        "outdated": false
+      },
+      {
+        "source_id": "TKT-2026-0845",
+        "outdated": false
+      },
+      {
+        "source_id": "TKT-2026-0866",
+        "outdated": false
+      },
+      {
+        "source_id": "TKT-2026-0714",
+        "outdated": false
+      },
+      {
+        "source_id": "TKT-2026-0707",
+        "outdated": false
+      },
+      {
+        "source_id": "TKT-2026-0716",
+        "outdated": false
+      }
+    ],
+    "conflicts": [],
+    "upcoming_deprecations": [],
+    "dropped": []
+  },
+  "tools_invoked": [
+    {
+      "tool": "send_password_reset",
+      "output": {
+        "sent": true,
+        "channel": "email",
+        "note": "A password-reset link was sent to the account owner's email on file. The link and token are never shown in chat (R9)."
+      }
+    },
+    {
+      "tool": "check_platform_status",
+      "output": [
+        {
+          "component": "api",
+          "status": "operational",
+          "incident_id": "",
+          "updated_at": "2026-10-06T08:00:00Z"
+        },
+        {
+          "component": "workflow-engine",
+          "status": "operational",
+          "incident_id": "",
+          "updated_at": "2026-10-06T08:00:00Z"
+        },
+        {
+          "component": "connectors",
+          "status": "degraded",
+          "incident_id": "INC-2041",
+          "updated_at": "2026-10-06T07:30:00Z"
+        },
+        {
+          "component": "billing",
+          "status": "operational",
+          "incident_id": "",
+          "updated_at": "2026-10-06T08:00:00Z"
+        }
+      ]
+    },
+    {
+      "tool": "lookup_account",
+      "output": {
+        "account_id": "A1005",
+        "company_name": "Umbrella Health",
+        "plan": "Business",
+        "status": "active",
+        "product_version": "4.3",
+        "created_at": "2026-01-15"
+      }
+    },
+    {
+      "tool": "get_invoices",
+      "output": [
+        {
+          "invoice_id": "INV-6006",
+          "account_id": "A1005",
+          "amount": 199.0,
+          "currency": "USD",
+          "charged_on": "2026-10-01",
+          "status": "paid",
+          "failure_reason": "",
+          "card_last4": "8935"
+        },
+        {
+          "invoice_id": "INV-6007",
+          "account_id": "A1005",
+          "amount": 199.0,
+          "currency": "USD",
+          "charged_on": "2026-10-01",
+          "status": "paid",
+          "failure_reason": "",
+          "card_last4": "1424"
+        }
+      ]
+    },
+    {
+      "tool": "check_refund_eligibility",
+      "output": {
+        "refund_window_days": 14,
+        "policy_citation": {
+          "rule_id": "REFUND-WINDOW-01",
+          "source_id": "KB-POL-REFUND-001",
+          "source_section": "Refund window"
+        },
+        "as_of_date": "2026-10-06",
+        "invoices": [
+          {
+            "invoice_id": "INV-6006",
+            "amount": 199.0,
+            "currency": "USD",
+            "charged_on": "2026-10-01",
+            "status": "paid",
+            "days_since_charge": 5,
+            "within_window": true,
+            "eligible_for_review": true
+          },
+          {
+            "invoice_id": "INV-6007",
+            "amount": 199.0,
+            "currency": "USD",
+            "charged_on": "2026-10-01",
+            "status": "paid",
+            "days_since_charge": 5,
+            "within_window": true,
+            "eligible_for_review": true
+          }
+        ],
+        "note": "Eligibility checked by tool. Refunds are approved and issued by a human, never by the assistant."
+      }
+    }
+  ],
+  "critic": {
+    "groundedness": 0.72,
+    "coverage": "complete",
+    "pii_risk": "none",
+    "policy_risk": "none",
+    "decision": "answer",
+    "revisions": 0,
+    "notes": ""
+  },
+  "answer_type": "escalated",
+  "conflicts_detected": [],
+  "escalation_reasons": [
+    "refund_or_credit",
+    "billing_dispute",
+    "explicit_human_request",
+    "strong_negative_sentiment",
+    "repeated_contact"
+  ],
+  "handoff_id": "H-423453",
+  "pii_redacted": true,
+  "model": "qwen2.5:3b-instruct",
+  "llm_provider": "ollama",
+  "latency_ms": 10255,
+  "llm_calls": 2,
+  "tokens": 925
+}

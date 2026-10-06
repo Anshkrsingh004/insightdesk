@@ -1,0 +1,144 @@
+{
+  "handoff_id": "H-3e50b4",
+  "conversation_id": "C-d44d52",
+  "account_id": "A1006",
+  "queue": "billing",
+  "priority": "high",
+  "created_at": "2026-10-06 10:49:09",
+  "bundle": {
+    "queue": "billing",
+    "priority": "high",
+    "intent": "billing",
+    "urgency": "high",
+    "sentiment": "negative",
+    "escalation_reasons": [
+      "refund_or_credit"
+    ],
+    "customer_summary": "I want a refund for this month's charge.",
+    "evidence": [
+      {
+        "tool": "check_refund_eligibility",
+        "output": {
+          "refund_window_days": 14,
+          "policy_citation": {
+            "rule_id": "REFUND-WINDOW-01",
+            "source_id": "KB-POL-REFUND-001",
+            "source_section": "Refund window"
+          },
+          "as_of_date": "2026-10-06",
+          "invoices": [
+            {
+              "invoice_id": "INV-6008",
+              "amount": 49.0,
+              "currency": "USD",
+              "charged_on": "2026-09-22",
+              "status": "paid",
+              "days_since_charge": 14,
+              "within_window": true,
+              "eligible_for_review": true
+            },
+            {
+              "invoice_id": "INV-6009",
+              "amount": 49.0,
+              "currency": "USD",
+              "charged_on": "2026-09-21",
+              "status": "paid",
+              "days_since_charge": 15,
+              "within_window": false,
+              "eligible_for_review": false
+            }
+          ],
+          "note": "Eligibility checked by tool. Refunds are approved and issued by a human, never by the assistant."
+        }
+      },
+      {
+        "tool": "get_usage",
+        "output": {
+          "usage": [
+            {
+              "account_id": "A1006",
+              "period": "2026-10",
+              "workflow_runs": 4500,
+              "api_calls_peak_per_min": 27,
+              "seats_used": 5
+            }
+          ],
+          "limits": {
+            "plan": "Pro",
+            "api_rate_limit_per_min": 60,
+            "monthly_workflow_runs": 10000,
+            "seats": 5,
+            "support_tier": "standard",
+            "monthly_price": 49.0
+          },
+          "flags": {
+            "runs_at_or_over_limit": false,
+            "runs_over_limit": false,
+            "rate_over_limit": false,
+            "seats_over_limit": false
+          }
+        }
+      },
+      {
+        "tool": "lookup_account",
+        "output": {
+          "account_id": "A1006",
+          "company_name": "Soylent Foods",
+          "plan": "Pro",
+          "status": "active",
+          "product_version": "4.3",
+          "created_at": "2026-01-15"
+        }
+      },
+      {
+        "tool": "get_invoices",
+        "output": [
+          {
+            "invoice_id": "INV-6008",
+            "account_id": "A1006",
+            "amount": 49.0,
+            "currency": "USD",
+            "charged_on": "2026-09-22",
+            "status": "paid",
+            "failure_reason": "",
+            "card_last4": "6912"
+          },
+          {
+            "invoice_id": "INV-6009",
+            "account_id": "A1006",
+            "amount": 49.0,
+            "currency": "USD",
+            "charged_on": "2026-09-21",
+            "status": "paid",
+            "failure_reason": "",
+            "card_last4": "0520"
+          }
+        ]
+      },
+      {
+        "source_id": "KB-ACC-USAGE-001",
+        "section": "Overview"
+      },
+      {
+        "source_id": "KB-BIL-DUP-001",
+        "section": "What you can do"
+      },
+      {
+        "source_id": "KB-BIL-FAILED-001",
+        "section": "Steps"
+      },
+      {
+        "source_id": "KB-BIL-UPG-001",
+        "section": "Steps"
+      },
+      {
+        "source_id": "KB-POL-REFUND-001",
+        "section": "Registry values"
+      }
+    ],
+    "attempted_answer": "[KB-POL-REFUND-001] states that refunds are approved and issued by billing, not by you. [KB-BIL-DUP-001] provides steps to update your card to clear a failed charge and restore active status. However, since your invoice INV-6008 was 14 days ago and within the 14-day refund window, you should contact billing for a refund. Please note that the refund process requires billing approval. [KB-POL-REFUND-001] specifies a refund window of 14 days, which has passed. Therefore, you cannot request a refund at this time.",
+    "unresolved_questions": [
+      "Approve refund of INV-6008?"
+    ]
+  }
+}
