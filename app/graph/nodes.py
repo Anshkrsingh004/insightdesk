@@ -13,6 +13,7 @@ from ..db import connection
 from ..llm import get_llm
 from ..schemas import Citation, IntentSignal
 from ..core import precedence as prec
+from ..data import tools as T
 from ..retrieval import vectorstore as vs
 
 ACCOUNT_RE = re.compile(r"\bA\d{4}\b")
@@ -76,7 +77,8 @@ def _heuristic_intent(msg: str) -> dict:
         itype, tools = "billing", ["lookup_account", "get_invoices", "check_refund_eligibility"]
     elif has("password", "reset link", "forgot my password", "api key", "token", "security", "hacked"):
         itype, tools = "security", ["lookup_account", "send_password_reset"]
-    elif has("429", "rate limit", "usage", "plan limit", "how many runs", "seats"):
+    elif has("429", "rate limit", "usage", "plan limit", "run limit", "how close",
+             "my limit", "approaching", "how many runs", "seats", "quota"):
         itype, tools = "account", ["lookup_account", "get_usage", "get_plan_limits"]
     elif has("cf-503", "cf-401", "cf-422", "cf-500", "error", "failing", "fails", "not working", "broken"):
         itype, tools = "troubleshooting", []
@@ -98,13 +100,39 @@ def _heuristic_intent(msg: str) -> dict:
             "explicit_human_request": human}
 
 
+def _normalize_intent(intent: dict, msg: str) -> dict:
+    """Deterministic floor over the LLM's classification for safety-critical signals, so
+    refund/billing/security never get misrouted and escalation (Phase 4) sees the right
+    intent. Code refines the model signal; it does not trust it blindly."""
+    t = msg.lower()
+
+    def has(*ws):
+        return any(w in t for w in ws)
+
+    if has("forgot my password", "forgot password", "reset my password", "reset link",
+           "password reset", "can't log in", "cannot log in", "locked out",
+           "account hacked", "compromised"):
+        intent["type"] = "security"
+    elif has("refund", "charged twice", "double charged", "duplicate charge", "charge me",
+             "chargeback", "billing dispute", "money back"):
+        intent["type"] = "complaint" if has("manager", "unacceptable", "third time",
+                                             "furious", "ridiculous", "fed up") else "billing"
+    if has("manager", "speak to a human", "real person", "talk to someone",
+           "get me a human", "human agent"):
+        intent["explicit_human_request"] = True
+    if has("unacceptable", "ridiculous", "furious", "third time", "fed up", "get me a manager"):
+        intent["sentiment"] = "angry"
+    return intent
+
+
 def classify(state: dict) -> dict:
     llm = get_llm()
     sig = llm.structured(
         system=CLASSIFY_SYSTEM, user=state.get("message", ""),
         schema=IntentSignal, mock=lambda: _heuristic_intent(state.get("message", "")),
     )
-    return {"intent": sig.model_dump(), "route": state.get("route", []) + ["classify"]}
+    intent = _normalize_intent(sig.model_dump(), state.get("message", ""))
+    return {"intent": intent, "route": state.get("route", []) + ["classify"]}
 
 
 # ---------------------------------------------------------------------------
@@ -141,6 +169,106 @@ def retrieve(state: dict) -> dict:
 
 
 # ---------------------------------------------------------------------------
+# tools (LLM picks via tools_needed; code executes deterministically) — R7
+# ---------------------------------------------------------------------------
+INTENT_TOOLS = {
+    "account": ["lookup_account", "get_usage", "get_plan_limits"],
+    "billing": ["lookup_account", "get_invoices", "check_refund_eligibility"],
+    "complaint": ["lookup_account", "get_invoices", "check_refund_eligibility"],
+    "security": ["lookup_account", "send_password_reset"],
+    "troubleshooting": [],
+    "how_to": [],
+}
+
+
+def _augment_tools(needed: list[str], msg: str) -> list[str]:
+    """Code-guaranteed tool selection: ensure the right tools run from message content,
+    regardless of the LLM's tools_needed (R7 — account facts never come from LLM text)."""
+    t = msg.lower()
+
+    def has(*ws):
+        return any(w in t for w in ws)
+
+    def add(*ts):
+        for x in ts:
+            if x not in needed:
+                needed.append(x)
+
+    if has("429", "rate limit", "usage", "plan limit", "run limit", "how many runs",
+           "quota", "seats", "over my limit", "exceed", "how close"):
+        add("lookup_account", "get_usage", "get_plan_limits")
+    if has("refund", "charged", "charge", "invoice", "billing", "duplicate", "money back",
+           "chargeback", "past due", "past_due", "payment"):
+        add("lookup_account", "get_invoices", "check_refund_eligibility")
+    if has("forgot my password", "forgot password", "reset my password", "reset link",
+           "password reset", "can't log in", "cannot log in", "locked out"):
+        add("lookup_account", "send_password_reset")
+    if has("status", "outage", "down", "degraded", "cf-503"):
+        add("check_platform_status")
+    return needed
+
+
+def run_tools(state: dict) -> dict:
+    aid = state.get("account_id")
+    intent = state.get("intent") or {}
+    itype = intent.get("type", "")
+    needed = list(intent.get("tools_needed") or INTENT_TOOLS.get(itype, []))
+    needed = _augment_tools(needed, state.get("message", ""))
+
+    invoked: list[dict] = []
+    if aid:
+        for name in needed:
+            fn = T.TOOLS.get(name)
+            if not fn:
+                continue
+            try:
+                out = fn(aid, as_of=state.get("as_of_date"))
+                invoked.append({"tool": name, "output": out})
+            except Exception as e:  # a required tool failed -> recorded; escalation may trigger (Phase 4)
+                invoked.append({"tool": name, "output": {"error": str(e)}, "failed": True})
+    return {"tools_invoked": invoked, "route": state.get("route", []) + ["tools"]}
+
+
+def _tool_summary(tools_invoked: list[dict]) -> str:
+    lines: list[str] = []
+    for ti in tools_invoked:
+        name, out = ti.get("tool"), ti.get("output")
+        if not out or ti.get("failed"):
+            continue
+        if name == "lookup_account":
+            lines.append(f"Account {out.get('account_id')} is on the {out.get('plan')} plan "
+                         f"(status {out.get('status')}, CloudFlow {out.get('product_version')}).")
+        elif name == "get_usage" and out.get("limits"):
+            u = out["usage"][0] if out.get("usage") else {}
+            lim, fl = out["limits"], out.get("flags", {})
+            lines.append(f"This period: {u.get('workflow_runs')} runs (limit {lim.get('monthly_workflow_runs')}), "
+                         f"peak {u.get('api_calls_peak_per_min')} API req/min (limit {lim.get('api_rate_limit_per_min')}).")
+            if fl.get("rate_over_limit"):
+                lines.append("You are OVER the per-minute API limit — that is why you see 429 errors.")
+            elif fl.get("runs_over_limit"):
+                lines.append("You are OVER your monthly workflow-run limit.")
+            elif fl.get("runs_at_or_over_limit"):
+                lines.append("You are exactly AT your monthly workflow-run limit.")
+        elif name == "get_invoices" and out:
+            lines.append("Recent invoices: " + "; ".join(
+                f"{i['invoice_id']} {i['currency']} {i['amount']} on {i['charged_on']} ({i['status']})"
+                for i in out[:3]) + ".")
+        elif name == "check_refund_eligibility" and out.get("invoices"):
+            i = out["invoices"][0]
+            lines.append(f"Invoice {i['invoice_id']} ({i['currency']} {i['amount']} on {i['charged_on']}) was "
+                         f"{i['days_since_charge']} days ago; within the {out['refund_window_days']}-day refund "
+                         f"window = {i['within_window']}. Refunds are approved and issued by billing, not by me.")
+        elif name == "check_platform_status" and out:
+            bad = [c for c in out if c.get("status") != "operational"]
+            lines.append(("Platform status: " + ", ".join(f"{c['component']}={c['status']}" for c in bad) + ".")
+                         if bad else "All platform components are operational.")
+        elif name == "send_password_reset" and out.get("sent"):
+            lines.append("I've triggered a password-reset link to the account owner's email. "
+                         "For security I can't show the link or token here.")
+    return " ".join(lines)
+
+
+# ---------------------------------------------------------------------------
 # compose (LLM abstractive; extractive in mock mode) -> answered / not_found
 # ---------------------------------------------------------------------------
 def _citations_from(auth: list[dict]) -> list[dict]:
@@ -171,34 +299,53 @@ def _extractive_answer(question: str, auth: list[dict], upcoming: list[dict]) ->
     return out
 
 
+def _tool_citations(tools_invoked: list[dict]) -> list[dict]:
+    cites = []
+    for ti in tools_invoked:
+        pc = (ti.get("output") or {}).get("policy_citation") if isinstance(ti.get("output"), dict) else None
+        if pc and pc.get("source_id"):
+            cites.append(Citation(source_id=pc["source_id"], doc_type="policy",
+                                  section=pc.get("source_section", "")).model_dump())
+    return cites
+
+
 def compose(state: dict) -> dict:
     pr = state.get("precedence", {})
     auth = pr.get("authoritative", [])
     upcoming = pr.get("upcoming_deprecations", [])
+    tools_invoked = state.get("tools_invoked", [])
+    tool_text = _tool_summary(tools_invoked)
 
-    if not auth:
-        return {
-            "answer": ("I couldn't find this in the CloudFlow knowledge base. I can hand this "
-                       "off to a human who can help — would you like that?"),
-            "answer_type": "not_found", "citations": [],
-            "route": state.get("route", []) + ["compose"],
-        }
-
+    # merge doc citations + tool/policy citations (dedup by source_id)
     citations = _citations_from(auth)
+    seen = {c["source_id"] for c in citations}
+    for tc in _tool_citations(tools_invoked):
+        if tc["source_id"] not in seen:
+            citations.append(tc); seen.add(tc["source_id"])
+
+    if not auth and not tool_text:
+        return {"answer": ("I couldn't find this in the CloudFlow knowledge base. I can hand this "
+                           "off to a human who can help — would you like that?"),
+                "answer_type": "not_found", "citations": [],
+                "route": state.get("route", []) + ["compose"]}
+
     llm = get_llm()
     if llm.provider == "mock":
-        answer = _extractive_answer(state.get("message", ""), auth, upcoming)
+        doc = _extractive_answer(state.get("message", ""), auth, upcoming) if auth else ""
+        answer = (f"{tool_text}\n\n{doc}" if tool_text and doc else (tool_text or doc)).strip()
     else:
         context = "\n\n".join(
             f"[{a['source_id']}] ({a.get('section','')}, versions {a.get('product_versions','')}, "
-            f"updated {a.get('last_updated','')}):\n{a['text']}" for a in auth
-        )
+            f"updated {a.get('last_updated','')}):\n{a['text']}" for a in auth)
         if upcoming:
             context += "\n\nUPCOMING DEPRECATIONS: " + "; ".join(
                 f"{u['source_id']} {u.get('title','')} removed {u.get('deprecated_on','')}" for u in upcoming)
+        if tool_text:
+            context += f"\n\nTOOL RESULTS (authoritative for current account state):\n{tool_text}"
         user = f"Customer question:\n{state.get('message','')}\n\nSources:\n{context}"
-        answer = llm.complete(system=COMPOSE_SYSTEM, user=user).strip() or \
-            _extractive_answer(state.get("message", ""), auth, upcoming)
+        fallback = (f"{tool_text}\n\n{_extractive_answer(state.get('message',''), auth, upcoming)}"
+                    if auth else tool_text).strip()
+        answer = llm.complete(system=COMPOSE_SYSTEM, user=user).strip() or fallback
 
     return {"answer": answer, "answer_type": "answered", "citations": citations,
             "route": state.get("route", []) + ["compose"]}

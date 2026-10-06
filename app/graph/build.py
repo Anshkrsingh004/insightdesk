@@ -33,6 +33,7 @@ def get_graph():
     g.add_node("authorize", nodes.authorize)
     g.add_node("classify", nodes.classify)
     g.add_node("retrieve", nodes.retrieve)
+    g.add_node("tools", nodes.run_tools)
     g.add_node("compose", nodes.compose)
     g.add_node("decline", nodes.decline)
     g.add_node("finalize", nodes.finalize)
@@ -41,7 +42,8 @@ def get_graph():
     g.add_edge("authorize", "classify")
     g.add_conditional_edges("classify", _route_after_classify,
                             {"retrieve": "retrieve", "decline": "decline"})
-    g.add_edge("retrieve", "compose")
+    g.add_edge("retrieve", "tools")
+    g.add_edge("tools", "compose")
     g.add_edge("compose", "finalize")
     g.add_edge("decline", "finalize")
     g.add_edge("finalize", END)
