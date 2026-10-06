@@ -33,9 +33,9 @@ KB-TRB-SYNC-001,article,Connector sync failures,1,4.x,2026-09-02,,,,generator: s
 KB-ADV-BRANCH-001,article,Conditional branching,1,4.x,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
 KB-ADV-SUB-001,article,Sub-workflows,1,4.x,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
 KB-ADV-AUDIT-001,article,Audit logs and exports,1,4.x,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
-TKT-2025-0411,ticket,CF-503 on Salesforce step,4,3.x,2025-07-14,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2025-0411,ticket,CF-503 on Salesforce step,4,4.x,2025-07-14,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
 TKT-2025-0590,ticket,API returning 429 constantly,4,4.x,2025-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
-TKT-2025-0633,ticket,Export runs via API,4,3.x,2025-10-20,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2025-0633,ticket,Export runs via API,4,3.x;4.x,2025-10-20,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
 TKT-2026-0820,ticket,Charged twice — get me a manager,4,4.x,2026-09-28,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
 TKT-2026-0845,ticket,Refund now or I cancel,4,4.x,2026-09-30,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
 TKT-2026-0866,ticket,Locked out and still billed,4,4.x,2026-10-01,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y

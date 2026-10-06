@@ -12,8 +12,9 @@ from typing import Optional
 from ..config import get_settings, today_str
 from ..db import connection, healthcheck as db_ok
 from ..llm import get_llm
+from ..graph.build import run_support
 from ..schemas import (
-    HealthStatus, IntentPublic, SupportRequest, SupportResponse,
+    Citation, HealthStatus, IntentPublic, SupportRequest, SupportResponse,
 )
 
 router = APIRouter()
@@ -54,15 +55,31 @@ def health() -> HealthStatus:
 # ---------------------------------------------------------------------------
 @router.post("/support", response_model=SupportResponse)
 def support(req: SupportRequest, x_account_id: Optional[str] = Header(default=None)) -> SupportResponse:
-    conv_id = req.conversation_id or f"C-{uuid.uuid4().hex[:6]}"
+    as_of = req.as_of_date or today_str()
+    state = run_support(
+        message=req.message, account_id=x_account_id, conversation_id=req.conversation_id,
+        product_version=req.product_version, as_of_date=as_of, channel=req.channel or "web",
+    )
+    intent = state.get("intent") or {}
     return SupportResponse(
-        trace_id=new_trace_id(),
-        conversation_id=conv_id,
-        answer_type="not_found",
-        answer="Pipeline not yet wired (Phase 0 scaffold). Coming in Phase 2.",
-        intent=IntentPublic(type="out_of_scope", urgency="low", sentiment="neutral",
-                            pii_detected=False, confidence=0.0),
-        as_of_date=req.as_of_date or today_str(),
+        trace_id=state["trace_id"],
+        conversation_id=state["conversation_id"],
+        answer_type=state.get("answer_type", "not_found"),
+        answer=state.get("answer", ""),
+        intent=IntentPublic(
+            type=intent.get("type", "out_of_scope"), urgency=intent.get("urgency", "low"),
+            sentiment=intent.get("sentiment", "neutral"),
+            pii_detected=intent.get("pii_detected", False),
+            confidence=intent.get("confidence", 0.0),
+        ),
+        citations=[Citation(**c) for c in state.get("citations", [])],
+        tools_invoked=state.get("tools_invoked", []),
+        critic=state.get("critic"),
+        conflicts_detected=state.get("conflicts", []),
+        handoff_id=state.get("handoff_id"),
+        handoff=state.get("handoff"),
+        pii_redacted=state.get("pii_redacted", False),
+        as_of_date=as_of,
     )
 
 

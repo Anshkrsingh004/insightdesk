@@ -480,7 +480,7 @@ ticket("TKT-2025-0411", "CF-503 on Salesforce step",
        "My Salesforce step keeps failing with CF-503.", "bug",
        "Workaround: manually set the Salesforce API version to 48.0 in the step config. "
        "That cleared the CF-503 for this customer.",
-       ["cf-503", "salesforce", "connector"], "2025-07-14", "3.x",
+       ["cf-503", "salesforce", "connector"], "2025-07-14", "4.x",
        outdated=True, conflicts_with="KB-TRB-503-001")
 
 ticket("TKT-2025-0590", "API returning 429 constantly",
@@ -493,7 +493,7 @@ ticket("TKT-2025-0590", "API returning 429 constantly",
 ticket("TKT-2025-0633", "Export runs via API",
        "How do I export workflow runs with the API?", "how_to",
        "Use GET /api/v3/export/runs?workflow={id}. Works fine.",
-       ["export", "api", "v3"], "2025-10-20", "3.x",
+       ["export", "api", "v3"], "2025-10-20", "3.x;4.x",
        outdated=True, conflicts_with="KB-API-EXPORT-001")
 
 # --- ANGRY COMPLAINTS (required human escalation) ---

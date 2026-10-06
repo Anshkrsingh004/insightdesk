@@ -10,7 +10,7 @@
     "connector"
   ],
   "resolved_at": "2025-07-14",
-  "product_version": "3.x",
+  "product_version": "4.x",
   "outdated": true,
   "conflicts_with": "KB-TRB-503-001",
   "angry": false,

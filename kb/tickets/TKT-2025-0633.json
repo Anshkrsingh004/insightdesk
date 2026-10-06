@@ -10,7 +10,7 @@
     "v3"
   ],
   "resolved_at": "2025-10-20",
-  "product_version": "3.x",
+  "product_version": "3.x;4.x",
   "outdated": true,
   "conflicts_with": "KB-API-EXPORT-001",
   "angry": false,
