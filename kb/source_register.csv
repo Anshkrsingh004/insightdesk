@@ -1,0 +1,60 @@
+source_id,doc_type,title,authority_level,product_versions,last_updated,effective_from,deprecated_on,supersedes,provenance,synthetic
+KB-HOW-EXPORT-001,article,Export your workflow run history,1,3.x;4.x,2026-09-10,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-TRB-503-001,article,Resolve CF-503 errors on a Salesforce step,1,4.x,2026-09-18,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-API-RATE-001,article,API rate limits and CF-429 / HTTP 429 errors,1,3.x;4.x,2026-09-22,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-BIL-DUP-001,article,Duplicate charges on your invoice,1,all,2026-09-05,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-API-EXPORT-001,article,Export runs via the API,1,3.x;4.x,2026-09-12,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+RN-2026-09-01,release_note,Release note: deprecation of the legacy v3 export API,2,3.x,2026-09-15,2026-09-15,2026-12-01,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-SEC-TOKENS-001,article,Rotate API tokens and reset your password,1,all,2026-09-20,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-ACC-USAGE-001,article,Check your usage against plan limits,1,all,2026-09-08,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-POL-REFUND-001,policy,Refund policy,1,all,2026-08-01,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-POL-LIMITS-001,policy,Plan limits policy,1,all,2026-08-01,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-POL-ESCALATION-001,policy,Escalation and SLA policy,1,all,2026-08-01,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-POL-AUP-001,policy,Acceptable use and scope of support,1,all,2026-08-01,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-ADV-VERSIONS-001,article,What changed between CloudFlow 3.x and 4.x,1,3.x;4.x,2026-09-01,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-TRB-REF-001,article,CloudFlow error-code reference,1,all,2026-09-25,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-GS-001,article,Create your CloudFlow account,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-GS-002,article,Build your first workflow,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-GS-003,article,Add a connector,1,4.x,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-GS-004,article,Schedule a workflow,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-GS-005,article,Invite team members and manage seats,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-BIL-FAILED-001,article,Failed payments and past_due status,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-BIL-UPG-001,article,Upgrade or downgrade your plan,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-BIL-SEATS-001,article,Add or remove seats,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-API-TOKENS-001,article,API authentication and tokens,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-API-WEBHOOK-001,article,Set up webhooks,1,4.x,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-API-SF-001,article,Salesforce connector setup,1,4.x,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-API-SLACK-001,article,Slack connector setup,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-TRB-401-001,article,Fix CF-401 authentication errors,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-TRB-422-001,article,Fix CF-422 validation errors,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-TRB-500-001,article,Fix CF-500 internal errors,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-TRB-QUEUE-001,article,Workflow runs stuck in queued,1,all,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-TRB-SYNC-001,article,Connector sync failures,1,4.x,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-ADV-BRANCH-001,article,Conditional branching,1,4.x,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-ADV-SUB-001,article,Sub-workflows,1,4.x,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+KB-ADV-AUDIT-001,article,Audit logs and exports,1,4.x,2026-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2025-0411,ticket,CF-503 on Salesforce step,4,3.x,2025-07-14,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2025-0590,ticket,API returning 429 constantly,4,4.x,2025-09-02,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2025-0633,ticket,Export runs via API,4,3.x,2025-10-20,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0820,ticket,Charged twice — get me a manager,4,4.x,2026-09-28,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0845,ticket,Refund now or I cancel,4,4.x,2026-09-30,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0866,ticket,Locked out and still billed,4,4.x,2026-10-01,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0701,ticket,How to add a Slack connector,4,4.x,2026-08-11,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0702,ticket,Schedule a nightly workflow,4,4.x,2026-08-12,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0703,ticket,Upgrade from Pro to Business,4,4.x,2026-08-15,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0704,ticket,CF-401 after token change,4,4.x,2026-08-18,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0705,ticket,Invite a teammate,4,4.x,2026-08-20,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0706,ticket,Webhook signature failing,4,4.x,2026-08-22,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0707,ticket,Downgrade to Free,4,4.x,2026-08-24,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0708,ticket,CF-422 on HTTP step,4,4.x,2026-08-26,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0709,ticket,Where is run history,4,4.x,2026-08-28,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0710,ticket,Add seats,4,4.x,2026-08-30,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0711,ticket,Connector OAuth expired,4,4.x,2026-09-01,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0712,ticket,Change owner email,4,4.x,2026-09-03,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0713,ticket,Export to CSV,4,4.x,2026-09-04,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0714,ticket,Rate limit on Free,4,4.x,2026-09-06,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0715,ticket,Sub-workflow data passing,4,4.x,2026-09-08,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0716,ticket,Past due after card expiry,4,4.x,2026-09-10,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0717,ticket,Audit log export,4,4.x,2026-09-12,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0718,ticket,Conditional branch,4,4.x,2026-09-14,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y
+TKT-2026-0719,ticket,Reset password,4,4.x,2026-09-16,,,,generator: synthetic/generate_kb.py (deterministic); prompt: synthetic/prompts/kb_generation_prompt.md,Y

@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0719",
+  "subject": "Reset password",
+  "customer_question": "I forgot my password.",
+  "intent": "account",
+  "resolution": "Directed to Sign in \u2192 Forgot password; reset link emailed to owner.",
+  "tags": [
+    "password",
+    "security"
+  ],
+  "resolved_at": "2026-09-16",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

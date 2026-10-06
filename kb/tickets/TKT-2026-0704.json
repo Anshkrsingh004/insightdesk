@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0704",
+  "subject": "CF-401 after token change",
+  "customer_question": "Getting CF-401 after I rotated my token.",
+  "intent": "bug",
+  "resolution": "Updated the integration with the new token; CF-401 cleared.",
+  "tags": [
+    "cf-401",
+    "token"
+  ],
+  "resolved_at": "2026-08-18",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

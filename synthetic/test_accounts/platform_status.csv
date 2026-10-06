@@ -1,0 +1,5 @@
+component,status,incident_id,updated_at
+api,operational,,2026-10-06T08:00:00Z
+workflow-engine,operational,,2026-10-06T08:00:00Z
+connectors,degraded,INC-2041,2026-10-06T07:30:00Z
+billing,operational,,2026-10-06T08:00:00Z

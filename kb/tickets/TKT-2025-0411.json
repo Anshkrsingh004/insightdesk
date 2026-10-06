@@ -1,0 +1,18 @@
+{
+  "id": "TKT-2025-0411",
+  "subject": "CF-503 on Salesforce step",
+  "customer_question": "My Salesforce step keeps failing with CF-503.",
+  "intent": "bug",
+  "resolution": "Workaround: manually set the Salesforce API version to 48.0 in the step config. That cleared the CF-503 for this customer.",
+  "tags": [
+    "cf-503",
+    "salesforce",
+    "connector"
+  ],
+  "resolved_at": "2025-07-14",
+  "product_version": "3.x",
+  "outdated": true,
+  "conflicts_with": "KB-TRB-503-001",
+  "angry": false,
+  "required_human": false
+}

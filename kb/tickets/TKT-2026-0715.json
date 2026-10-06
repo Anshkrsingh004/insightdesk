@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0715",
+  "subject": "Sub-workflow data passing",
+  "customer_question": "How do I pass data to a sub-workflow?",
+  "intent": "how_to",
+  "resolution": "Mapped parent outputs to sub-workflow inputs.",
+  "tags": [
+    "sub-workflow",
+    "advanced"
+  ],
+  "resolved_at": "2026-09-08",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

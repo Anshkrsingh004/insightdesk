@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0710",
+  "subject": "Add seats",
+  "customer_question": "I need two more seats.",
+  "intent": "account",
+  "resolution": "Added seats within Business plan maximum.",
+  "tags": [
+    "seats",
+    "team"
+  ],
+  "resolved_at": "2026-08-30",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

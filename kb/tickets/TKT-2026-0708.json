@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0708",
+  "subject": "CF-422 on HTTP step",
+  "customer_question": "CF-422 when I save my HTTP step.",
+  "intent": "bug",
+  "resolution": "Fixed the malformed URL field flagged by CF-422.",
+  "tags": [
+    "cf-422",
+    "http"
+  ],
+  "resolved_at": "2026-08-26",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

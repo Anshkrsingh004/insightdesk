@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0712",
+  "subject": "Change owner email",
+  "customer_question": "How do I change the account owner email?",
+  "intent": "account",
+  "resolution": "Updated owner email under Settings \u2192 Account.",
+  "tags": [
+    "account",
+    "email"
+  ],
+  "resolved_at": "2026-09-03",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

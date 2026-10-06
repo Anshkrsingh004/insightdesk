@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0714",
+  "subject": "Rate limit on Free",
+  "customer_question": "I hit 429 on the Free plan quickly.",
+  "intent": "bug",
+  "resolution": "Explained Free is 10 req/min; suggested backoff or upgrade.",
+  "tags": [
+    "cf-429",
+    "free"
+  ],
+  "resolved_at": "2026-09-06",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

@@ -1,0 +1,19 @@
+{
+  "id": "TKT-2026-0866",
+  "subject": "Locked out and still billed",
+  "customer_question": "My account is suspended but you're still billing me. This is unacceptable, I want a human right now.",
+  "intent": "complaint",
+  "resolution": "Escalated to billing + account team. Reviewed suspension and invoice, corrected billing, restored access after verification.",
+  "tags": [
+    "account",
+    "suspended",
+    "billing",
+    "angry"
+  ],
+  "resolved_at": "2026-10-01",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": true,
+  "required_human": true
+}

@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0713",
+  "subject": "Export to CSV",
+  "customer_question": "Can I export runs to CSV?",
+  "intent": "how_to",
+  "resolution": "Run History \u2192 Export \u2192 CSV (4.x).",
+  "tags": [
+    "export",
+    "csv"
+  ],
+  "resolved_at": "2026-09-04",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

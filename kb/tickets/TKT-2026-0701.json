@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0701",
+  "subject": "How to add a Slack connector",
+  "customer_question": "How do I post workflow results to Slack?",
+  "intent": "how_to",
+  "resolution": "Walked them through Settings \u2192 Connectors \u2192 Slack and channel mapping.",
+  "tags": [
+    "slack",
+    "connector"
+  ],
+  "resolved_at": "2026-08-11",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

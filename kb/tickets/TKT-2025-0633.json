@@ -1,0 +1,18 @@
+{
+  "id": "TKT-2025-0633",
+  "subject": "Export runs via API",
+  "customer_question": "How do I export workflow runs with the API?",
+  "intent": "how_to",
+  "resolution": "Use GET /api/v3/export/runs?workflow={id}. Works fine.",
+  "tags": [
+    "export",
+    "api",
+    "v3"
+  ],
+  "resolved_at": "2025-10-20",
+  "product_version": "3.x",
+  "outdated": true,
+  "conflicts_with": "KB-API-EXPORT-001",
+  "angry": false,
+  "required_human": false
+}

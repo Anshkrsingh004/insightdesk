@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0702",
+  "subject": "Schedule a nightly workflow",
+  "customer_question": "Can I run a workflow every night at 2am?",
+  "intent": "how_to",
+  "resolution": "Showed cron trigger 0 2 * * * under Workflow \u2192 Triggers.",
+  "tags": [
+    "schedule",
+    "cron"
+  ],
+  "resolved_at": "2026-08-12",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

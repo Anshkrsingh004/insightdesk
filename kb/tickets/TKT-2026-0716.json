@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0716",
+  "subject": "Past due after card expiry",
+  "customer_question": "My card expired and I'm past_due.",
+  "intent": "billing",
+  "resolution": "Updated card; failed invoice retried and paid; status back to active.",
+  "tags": [
+    "past_due",
+    "billing"
+  ],
+  "resolved_at": "2026-09-10",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

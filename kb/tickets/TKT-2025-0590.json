@@ -1,0 +1,18 @@
+{
+  "id": "TKT-2025-0590",
+  "subject": "API returning 429 constantly",
+  "customer_question": "Why are my API calls failing with 429 errors?",
+  "intent": "bug",
+  "resolution": "We temporarily raised this account's per-minute rate limit above the Pro plan to unblock them during an incident.",
+  "tags": [
+    "cf-429",
+    "rate-limit",
+    "api"
+  ],
+  "resolved_at": "2025-09-02",
+  "product_version": "4.x",
+  "outdated": true,
+  "conflicts_with": "KB-API-RATE-001",
+  "angry": false,
+  "required_human": false
+}

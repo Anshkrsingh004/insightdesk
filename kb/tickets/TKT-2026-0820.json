@@ -1,0 +1,19 @@
+{
+  "id": "TKT-2026-0820",
+  "subject": "Charged twice \u2014 get me a manager",
+  "customer_question": "Third time writing. You charged me twice this month. Get me a manager now.",
+  "intent": "complaint",
+  "resolution": "Escalated to billing. Confirmed duplicate charge, billing approved and issued a refund for the second invoice. Customer apologised to.",
+  "tags": [
+    "billing",
+    "duplicate",
+    "angry",
+    "refund"
+  ],
+  "resolved_at": "2026-09-28",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": true,
+  "required_human": true
+}

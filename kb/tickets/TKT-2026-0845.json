@@ -1,0 +1,19 @@
+{
+  "id": "TKT-2026-0845",
+  "subject": "Refund now or I cancel",
+  "customer_question": "I've asked three times for a refund and nobody replies. Refund me today or I'm cancelling and disputing the charge.",
+  "intent": "complaint",
+  "resolution": "Escalated to billing with prior-contact history. Billing reviewed eligibility and processed the refund; retention followed up.",
+  "tags": [
+    "billing",
+    "refund",
+    "angry",
+    "repeated-contact"
+  ],
+  "resolved_at": "2026-09-30",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": true,
+  "required_human": true
+}

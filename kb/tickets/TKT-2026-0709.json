@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0709",
+  "subject": "Where is run history",
+  "customer_question": "Where do I find past runs?",
+  "intent": "how_to",
+  "resolution": "Run History tab on the workflow (4.x).",
+  "tags": [
+    "runs",
+    "history"
+  ],
+  "resolved_at": "2026-08-28",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0718",
+  "subject": "Conditional branch",
+  "customer_question": "How do I branch on a value?",
+  "intent": "how_to",
+  "resolution": "Added if/else branch in the editor (4.x).",
+  "tags": [
+    "branching",
+    "advanced"
+  ],
+  "resolved_at": "2026-09-14",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

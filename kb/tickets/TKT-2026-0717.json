@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0717",
+  "subject": "Audit log export",
+  "customer_question": "Can I export audit logs?",
+  "intent": "how_to",
+  "resolution": "Settings \u2192 Audit \u2192 Export (Business/Enterprise).",
+  "tags": [
+    "audit",
+    "export"
+  ],
+  "resolved_at": "2026-09-12",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

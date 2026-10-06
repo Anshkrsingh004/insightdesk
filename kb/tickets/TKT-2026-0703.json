@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0703",
+  "subject": "Upgrade from Pro to Business",
+  "customer_question": "How do I upgrade to Business?",
+  "intent": "account",
+  "resolution": "Upgraded via Settings \u2192 Billing; limits applied immediately.",
+  "tags": [
+    "billing",
+    "upgrade"
+  ],
+  "resolved_at": "2026-08-15",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

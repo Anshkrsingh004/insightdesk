@@ -1,0 +1,31 @@
+account_id,company_name,owner_email,plan,status,product_version,created_at
+A1001,Acme Logistics,acmelogistics.a1001@example.com,Pro,active,4.3,2026-01-15
+A1002,Northwind Retail,northwindretail.a1002@example.com,Pro,active,4.3,2026-01-15
+A1003,Globex Analytics,globexanalytics.a1003@example.com,Pro,active,4.3,2026-01-15
+A1004,Initech Software,initechsoftware.a1004@example.com,Pro,past_due,4.3,2026-01-15
+A1005,Umbrella Health,umbrellahealth.a1005@example.com,Business,active,4.3,2026-01-15
+A1006,Soylent Foods,soylentfoods.a1006@example.com,Pro,active,4.3,2026-01-15
+A1007,Hooli Media,hoolimedia.a1007@example.com,Business,suspended,4.3,2026-01-15
+A1008,Stark Industrial,starkindustrial.a1008@example.com,Business,active,3.9,2026-01-15
+A1009,Wayne Supplies,waynesupplies.a1009@example.com,Enterprise,active,4.3,2026-01-15
+A1010,Wonka Confectionery,wonkaconfectionery.a1010@example.com,Free,cancelled,3.9,2026-01-15
+A1011,Gekko Capital,gekkocapital.a1011@example.com,Free,active,3.9,2026-01-15
+A1012,Vandelay Imports,vandelayimports.a1012@example.com,Free,past_due,4.3,2026-01-15
+A1013,Pied Piper Cloud,piedpipercloud.a1013@example.com,Free,suspended,4.3,2026-01-15
+A1014,Dunder Paper,dunderpaper.a1014@example.com,Free,cancelled,4.3,2026-01-15
+A1015,Prestige Worldwide,prestigeworldwide.a1015@example.com,Pro,active,4.3,2026-01-15
+A1016,Oscorp Labs,oscorplabs.a1016@example.com,Pro,past_due,4.3,2026-01-15
+A1017,Monarch Travel,monarchtravel.a1017@example.com,Pro,suspended,4.3,2026-01-15
+A1018,Bluth Property,bluthproperty.a1018@example.com,Pro,cancelled,3.9,2026-01-15
+A1019,Sterling Design,sterlingdesign.a1019@example.com,Business,active,4.3,2026-01-15
+A1020,Paper Street Co,paperstreetco.a1020@example.com,Business,past_due,4.3,2026-01-15
+A1021,Nakatomi Trading,nakatomitrading.a1021@example.com,Business,suspended,4.3,2026-01-15
+A1022,Massive Dynamic,massivedynamic.a1022@example.com,Business,cancelled,4.3,2026-01-15
+A1023,Aperture Science,aperturescience.a1023@example.com,Enterprise,active,4.3,2026-01-15
+A1024,Black Mesa,blackmesa.a1024@example.com,Enterprise,past_due,4.3,2026-01-15
+A1025,Virtucon Group,virtucongroup.a1025@example.com,Enterprise,suspended,3.9,2026-01-15
+A1026,Enersoft,enersoft.a1026@example.com,Enterprise,cancelled,4.3,2026-01-15
+A1027,Gekko Capital,gekkocapital.a1027@example.com,Free,active,4.3,2026-01-15
+A1028,Dunder Paper,dunderpaper.a1028@example.com,Pro,active,4.3,2026-01-15
+A1029,Monarch Travel,monarchtravel.a1029@example.com,Business,active,4.3,2026-01-15
+A1030,Paper Street Co,paperstreetco.a1030@example.com,Enterprise,active,4.3,2026-01-15

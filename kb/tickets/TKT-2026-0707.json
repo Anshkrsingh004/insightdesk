@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0707",
+  "subject": "Downgrade to Free",
+  "customer_question": "Can I move to the Free plan?",
+  "intent": "account",
+  "resolution": "Downgraded; noted reduced limits (100 runs/mo).",
+  "tags": [
+    "billing",
+    "downgrade"
+  ],
+  "resolved_at": "2026-08-24",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

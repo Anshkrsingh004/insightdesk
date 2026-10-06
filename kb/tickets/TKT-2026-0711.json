@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0711",
+  "subject": "Connector OAuth expired",
+  "customer_question": "Salesforce stopped syncing.",
+  "intent": "bug",
+  "resolution": "Re-authorised the Salesforce connector; sync resumed.",
+  "tags": [
+    "salesforce",
+    "oauth"
+  ],
+  "resolved_at": "2026-09-01",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}

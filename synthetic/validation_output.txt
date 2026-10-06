@@ -1,0 +1,5 @@
+=== Synthetic account validation ===
+accounts=30 invoices=43 usage_rows=30 plans=4
+HARD violations: 0
+SOFT warnings: 0
+RESULT: PASS

@@ -1,0 +1,17 @@
+{
+  "id": "TKT-2026-0706",
+  "subject": "Webhook signature failing",
+  "customer_question": "My webhook verification fails.",
+  "intent": "bug",
+  "resolution": "Pointed them to the signing-secret header; verification passed.",
+  "tags": [
+    "webhook",
+    "api"
+  ],
+  "resolved_at": "2026-08-22",
+  "product_version": "4.x",
+  "outdated": false,
+  "conflicts_with": "",
+  "angry": false,
+  "required_human": false
+}
