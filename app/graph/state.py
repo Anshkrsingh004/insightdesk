@@ -32,6 +32,14 @@ class GraphState(TypedDict, total=False):
     handoff: Optional[dict]
     pii_redacted: bool
 
+    # intermediate (must be declared or LangGraph drops them between nodes)
+    revisions: int
+    revise_feedback: str
+    esc_decision: bool
+    esc_reasons: list[str]
+    esc_queue: str
+    esc_priority: str
+
     # audit / observability
     trace_id: str
     route: list[str]

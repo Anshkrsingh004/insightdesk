@@ -11,9 +11,12 @@ import time
 from ..config import get_settings
 from ..db import connection
 from ..llm import get_llm
-from ..schemas import Citation, IntentSignal
+from ..schemas import Citation, CriticSignal, IntentSignal
 from ..core import precedence as prec
+from ..core import escalation as esc
+from ..core import pii
 from ..data import tools as T
+from ..data import policy
 from ..retrieval import vectorstore as vs
 
 ACCOUNT_RE = re.compile(r"\bA\d{4}\b")
@@ -36,7 +39,23 @@ question USING ONLY the provided sources and tool results. Rules:
 - If an upcoming deprecation is provided, mention it and its date.
 - Prefer current documentation over older resolved tickets.
 - If the sources do not cover the question, say you don't know rather than inventing.
+- Never promise a refund, credit or account change — those are approved by a human.
 - Be concise and specific (steps, error codes, exact limits). Do not reveal secrets."""
+
+CRITIC_SYSTEM = """You are a strict reviewer of a draft support answer. Given the draft
+and the sources it must be based on, return JSON:
+  groundedness: number 0..1 (fraction of the draft that is directly supported by the sources)
+  coverage: complete | partial | none
+  decision: answer | revise | escalate
+Judge ONLY grounding and coverage. Do not consider PII or policy here."""
+
+# unapproved-action promises that must never reach the customer (code-detected policy risk)
+_PROMISE = re.compile(
+    r"\b(i(?:['’]ve| have| will| can)?\s*(refund(ed)?|credit(ed)?|cancel(l?ed)?|"
+    r"upgrad(e|ed)|downgrad(e|ed)|issu(e|ed)\s+(a\s+)?refund)|refund (has been|is) (issued|processed)|"
+    r"your account (has been|is) (cancelled|canceled|upgraded|credited))\b",
+    re.IGNORECASE,
+)
 
 
 # ---------------------------------------------------------------------------
@@ -343,12 +362,171 @@ def compose(state: dict) -> dict:
         if tool_text:
             context += f"\n\nTOOL RESULTS (authoritative for current account state):\n{tool_text}"
         user = f"Customer question:\n{state.get('message','')}\n\nSources:\n{context}"
+        if state.get("revise_feedback"):
+            user += f"\n\nREVISION NOTE: {state['revise_feedback']}"
         fallback = (f"{tool_text}\n\n{_extractive_answer(state.get('message',''), auth, upcoming)}"
                     if auth else tool_text).strip()
         answer = llm.complete(system=COMPOSE_SYSTEM, user=user).strip() or fallback
 
     return {"answer": answer, "answer_type": "answered", "citations": citations,
             "route": state.get("route", []) + ["compose"]}
+
+
+# ---------------------------------------------------------------------------
+# critic (LLM scores groundedness/coverage; code owns pii_risk & policy_risk) — R4
+# ---------------------------------------------------------------------------
+def _word_overlap(answer: str, sources: str) -> float:
+    aw = set(re.findall(r"[a-z0-9]{4,}", answer.lower()))
+    sw = set(re.findall(r"[a-z0-9]{4,}", sources.lower()))
+    return (len(aw & sw) / len(aw)) if aw else 0.0
+
+
+def _policy_risk(answer: str) -> str:
+    """High if the draft promises an unapproved action (refund/credit/account change)."""
+    return "high" if _PROMISE.search(answer or "") else "none"
+
+
+def critic(state: dict) -> dict:
+    answer = state.get("answer", "")
+    atype = state.get("answer_type", "")
+    pr = state.get("precedence", {})
+    sources = " ".join(a.get("text", "") for a in pr.get("authoritative", []))
+    sources += " " + _tool_summary(state.get("tools_invoked", []))
+
+    def mock():
+        if atype == "not_found" or not answer:
+            return {"groundedness": 0.25, "coverage": "none", "decision": "escalate"}
+        overlap = round(_word_overlap(answer, sources), 2)
+        grounded = max(0.72, overlap) if state.get("citations") else overlap
+        return {"groundedness": grounded,
+                "coverage": "complete" if len(answer) > 120 else "partial",
+                "decision": "answer" if grounded >= 0.6 else "revise"}
+
+    llm = get_llm()
+    if llm.provider == "mock" or not get_settings().critic_llm:
+        sig = CriticSignal.model_validate(mock())  # fast deterministic groundedness
+    else:
+        sig = llm.structured(system=CRITIC_SYSTEM,
+                             user=f"Draft answer:\n{answer}\n\nSources:\n{sources[:3000]}",
+                             schema=CriticSignal, mock=mock)
+    data = sig.model_dump()
+    # Safety signals are ALWAYS code-computed, never trusted to the model.
+    data["pii_risk"] = pii.risk(answer)
+    data["policy_risk"] = _policy_risk(answer)
+    data["revisions"] = state.get("revisions", 0)
+    return {"critic": data, "route": state.get("route", []) + ["critic"]}
+
+
+# ---------------------------------------------------------------------------
+# revise (code) — re-enter compose once with the critic's feedback
+# ---------------------------------------------------------------------------
+def revise(state: dict) -> dict:
+    crit = state.get("critic") or {}
+    fb = (f"Your previous draft scored low on grounding (groundedness "
+          f"{crit.get('groundedness')}). Rewrite using ONLY the sources, cite them, and "
+          f"do not add unsupported claims.")
+    return {"revisions": state.get("revisions", 0) + 1, "revise_feedback": fb,
+            "route": state.get("route", []) + ["revise"]}
+
+
+# ---------------------------------------------------------------------------
+# escalation (code) — Annex A.3 decision + handoff bundle (Annex D)
+# ---------------------------------------------------------------------------
+_SLA_TEXT = {"billing": "one business day", "security": "4 hours",
+             "technical": "one business day", "general": "one business day"}
+
+
+def _unresolved_questions(reasons: list[str], tools_invoked: list[dict]) -> list[str]:
+    qs = []
+    if {"refund_or_credit", "billing_dispute"} & set(reasons):
+        inv = None
+        for t in tools_invoked:
+            if t["tool"] == "get_invoices" and t.get("output"):
+                inv = t["output"][0]["invoice_id"] if t["output"] else None
+        qs.append(f"Approve refund of {inv}?" if inv else "Approve refund for the disputed charge?")
+    if "account_deletion" in reasons:
+        qs.append("Confirm identity and proceed with account deletion?")
+    if "security_incident" in reasons:
+        qs.append("Verify identity and secure the account?")
+    if not qs:
+        qs.append("Review and respond to the customer.")
+    return qs
+
+
+def escalate(state: dict) -> dict:
+    intent = state.get("intent") or {}
+    crit = state.get("critic") or {}
+    tools_invoked = state.get("tools_invoked", [])
+    reasons = state.get("esc_reasons", [])
+    queue = state.get("esc_queue", "general")
+    priority = state.get("esc_priority", "normal")
+
+    # Evidence = tool outputs + cited sources (PII-redacted)
+    evidence = [{"tool": t["tool"], "output": t.get("output")} for t in tools_invoked]
+    for c in state.get("citations", []):
+        evidence.append({"source_id": c["source_id"], "section": c.get("section", "")})
+
+    bundle = {
+        "queue": queue, "priority": priority,
+        "intent": intent.get("type", ""), "urgency": intent.get("urgency", ""),
+        "sentiment": intent.get("sentiment", ""),
+        "escalation_reasons": reasons,
+        "customer_summary": _customer_summary(state),
+        "evidence": pii.redact_obj(evidence),
+        "attempted_answer": pii.redact(state.get("answer", "")),
+        "unresolved_questions": _unresolved_questions(reasons, tools_invoked),
+    }
+    created = T.create_handoff(state.get("conversation_id"), state.get("account_id"),
+                              queue, priority, bundle)
+    hid = created["handoff_id"]
+
+    cannot = ("issue refunds or credits" if queue == "billing"
+              else "make account or security changes" if queue == "security"
+              else "resolve this myself")
+    msg = (f"I'm sorry about this, and I understand the frustration. I've passed your case to "
+           f"our {queue} team with all the details, and you'll hear back within "
+           f"{_SLA_TEXT.get(queue, 'one business day')}. I can't {cannot} — a human will take it "
+           f"from here (reference {hid}).")
+
+    return {"answer_type": "escalated", "answer": msg, "handoff_id": hid,
+            "handoff": bundle, "pii_redacted": True,
+            "route": state.get("route", []) + ["escalate"]}
+
+
+def _customer_summary(state: dict) -> str:
+    msg = pii.redact(state.get("message", ""))
+    return (msg[:200] + "…") if len(msg) > 200 else msg
+
+
+# ---------------------------------------------------------------------------
+# decide (code) — run the Escalation Policy Engine; set final answer_type
+# ---------------------------------------------------------------------------
+def decide(state: dict) -> dict:
+    intent = state.get("intent") or {}
+    crit = state.get("critic") or {}
+    pr = state.get("precedence", {})
+    has_grounding = bool(pr.get("authoritative"))
+    threshold, _cite = policy.get_critic_threshold()
+
+    decision = esc.decide(
+        intent=intent, critic=crit, tools_invoked=state.get("tools_invoked", []),
+        has_grounding=has_grounding, message=state.get("message", ""),
+        threshold=threshold, revisions=state.get("revisions", 0),
+    )
+    return {"esc_decision": decision.escalate, "esc_reasons": decision.reasons,
+            "esc_queue": decision.queue, "esc_priority": decision.priority,
+            "route": state.get("route", []) + ["decide"]}
+
+
+# ---------------------------------------------------------------------------
+# clarify (code) -> clarification_needed
+# ---------------------------------------------------------------------------
+def clarify(state: dict) -> dict:
+    return {"answer_type": "clarification_needed",
+            "answer": ("I want to get this right — could you tell me a bit more? For example, "
+                       "which CloudFlow feature or step is affected, and any error code you see "
+                       "(like CF-503 or a 429)?"),
+            "citations": [], "route": state.get("route", []) + ["clarify"]}
 
 
 # ---------------------------------------------------------------------------

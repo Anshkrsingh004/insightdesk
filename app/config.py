@@ -38,6 +38,9 @@ class Settings(BaseSettings):
     # ---- Retrieval / policy ----
     top_k: int = 5
     critic_min_groundedness: float = 0.6
+    # critic groundedness via LLM (self-critique) or fast deterministic overlap.
+    # A config we compare in the Phase 6 evaluation.
+    critic_llm: bool = True
 
     @property
     def sqlite_abspath(self) -> Path:

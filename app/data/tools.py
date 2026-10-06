@@ -18,13 +18,6 @@ from ..db import connection
 from . import policy
 
 
-def _mask_email(e: str) -> str:
-    if not e or "@" not in e:
-        return e
-    local, dom = e.split("@", 1)
-    return (local[0] + "***") + "@" + dom
-
-
 def _days_between(a: str, b: str) -> int:
     ya, ma, da = map(int, a.split("-"))
     yb, mb, db = map(int, b.split("-"))
@@ -38,7 +31,7 @@ def lookup_account(account_id: str) -> dict | None:
     if not r:
         return None
     d = dict(r)
-    d["owner_email"] = _mask_email(d.get("owner_email", ""))  # do not echo PII
+    d.pop("owner_email", None)  # never expose customer PII; the human agent has account_id
     return d
 
 
