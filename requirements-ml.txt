@@ -1,0 +1,4 @@
+# Optional: library-form embeddings (mandated choice literally).
+# Default runtime uses Chroma's bundled ONNX all-MiniLM-L6-v2 (same weights, no torch).
+# Install this ONLY to switch EMBEDDINGS=sentence-transformers.
+sentence-transformers==3.3.1

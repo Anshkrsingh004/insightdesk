@@ -1,0 +1,23 @@
+# --- Core API (mandated: FastAPI + Uvicorn + Pydantic v2) ---
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.1
+python-multipart==0.0.20   # POST /ingest multipart
+httpx==0.28.1              # Ollama / cloud LLM calls (no heavy SDKs)
+
+# --- Orchestration (mandated: LangGraph) ---
+langgraph==0.2.60
+
+# --- Vector store (mandated: ChromaDB, persisted) ---
+chromadb==0.5.23           # ships ONNX all-MiniLM-L6-v2 embedding (no torch needed)
+
+# --- Data / eval ---
+pandas==2.2.3
+
+# --- UI (mandated: Streamlit) ---
+streamlit==1.41.1
+
+# Optional heavy path (same all-MiniLM-L6-v2 weights via the library form).
+# Installs torch (~2GB); only needed if EMBEDDINGS=sentence-transformers.
+# See requirements-ml.txt
