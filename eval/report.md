@@ -25,9 +25,11 @@ Covers the Section 7 minimums: ≥5 answerable how-to + 3 version-specific, ≥3
 
 | Config | mode | params | Outcome | Retr.hit | Cite | Conflict | Esc P/R | CriticAgr | PII leaks | Latency p50/p95 ms | LLMcalls/tokens |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| default | mock/code-crit | k=5 thr=0.6 | 100.0% | 100.0% | 100.0% | 100.0% | 100.0%/100.0% | 100.0% | 0 | 181/193 | 0/0 |
+| default | mock/code-crit | k=5 thr=0.6 | 100.0% | 100.0% | 100.0% | 100.0% | 100.0%/100.0% | 100.0% | 0 | 235/270 | 0/0 |
 | topk3 | mock/code-crit | k=3 thr=0.6 | 100.0% | 100.0% | 100.0% | 100.0% | 100.0%/100.0% | 100.0% | 0 | 179/203 | 0/0 |
 | thr075 | mock/code-crit | k=5 thr=0.75 | 100.0% | 100.0% | 100.0% | 100.0% | 100.0%/100.0% | 87.5% | 0 | 178/192 | 0/0 |
+| ollama | ollama/code-crit | k=5 thr=0.6 | 96.3% | 100.0% | 99.0% | 100.0% | 100.0%/100.0% | 93.8% | 0 | 9912/13747 | 1.81/704.6 |
+| ollama_criticllm | ollama/llm-crit | k=5 thr=0.6 | 77.8% | 100.0% | 99.0% | 100.0% | 45.5%/100.0% | 68.8% | 0 | 21194/25754 | 3.89/552.7 |
 
 ## Findings and final choice
 
@@ -36,6 +38,8 @@ Covers the Section 7 minimums: ≥5 answerable how-to + 3 version-specific, ≥3
 - **Grounding**: retrieval hit-rate 100.0%, citation validity 100.0%, outdated-ticket conflict detection 100.0%.
 - **Critic threshold** 0.6 vs 0.75: critic agreement 100.0% vs 87.5% — 0.75 is too strict and disagrees with human grounding judgements. **Chose 0.6.**
 - **top_k** 3 vs 5: retrieval hit-rate 100.0% vs 100.0% — k=3 is already sufficient on this KB; we keep k=5 for headroom on live-ingested content (simplest design that still meets the need).
+- **Critic: deterministic vs LLM self-critique** (both on `qwen2.5:3b`): escalation precision 100.0% (code) vs 45.5% (LLM), outcome accuracy 96.3% vs 77.8%, latency p50 9912ms vs 21194ms. The small LLM judge **over-escalates grounded answers** and costs an extra call, so we default to the **deterministic critic**. (`CRITIC_LLM=true` enables the LLM critic.)
+- **Latency/cost (local qwen2.5:3b, CPU)**: p50 9912ms, p95 13747ms, 1.81 LLM calls and 704.6 tokens per request on average. `mock` mode responds in ~235ms for routing/tool/escalation tests.
 
 **Final configuration:** mock-capable pipeline; local `qwen2.5:3b-instruct` for fluency; top_k=5; deterministic critic; critic groundedness floor 0.6; relevance gate 0.58. Every number above is reproducible via `eval/run_eval.py`.
 

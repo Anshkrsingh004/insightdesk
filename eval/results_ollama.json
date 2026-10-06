@@ -9,31 +9,31 @@
     "relevance_max_distance": 0.58
   },
   "n_cases": 27,
-  "outcome_accuracy_pct": 92.6,
-  "answer_correctness_pct": 92.9,
+  "outcome_accuracy_pct": 96.3,
+  "answer_correctness_pct": 85.7,
   "retrieval_hit_rate_pct": 100.0,
   "citation_validity_pct": 99.0,
   "conflict_detection_pct": 100.0,
   "escalation": {
     "tp": 5,
-    "fp": 1,
+    "fp": 0,
     "fn": 0,
-    "tn": 21,
-    "precision_pct": 83.3,
+    "tn": 22,
+    "precision_pct": 100.0,
     "recall_pct": 100.0,
-    "f1": 90.9,
+    "f1": 100.0,
     "reason_match_pct": 100.0
   },
   "critic_agreement_pct": 93.8,
   "pii_leaks": 0,
   "latency_ms": {
-    "p50": 10471,
-    "p95": 14233,
-    "mean": 9760
+    "p50": 9912,
+    "p95": 13747,
+    "mean": 9214
   },
   "cost": {
     "llm_calls_mean": 1.81,
-    "tokens_mean": 715.6
+    "tokens_mean": 704.6
   },
   "rows": [
     {
@@ -42,7 +42,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 13894,
+      "latency_ms": 10042,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -52,7 +52,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 10471,
+      "latency_ms": 9912,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -62,7 +62,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 10587,
+      "latency_ms": 9400,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -72,7 +72,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 10895,
+      "latency_ms": 10514,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -82,7 +82,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 9510,
+      "latency_ms": 8927,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -92,7 +92,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 9536,
+      "latency_ms": 9133,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -102,7 +102,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 12006,
+      "latency_ms": 11081,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -112,7 +112,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 12968,
+      "latency_ms": 11775,
       "conflict_ok": true,
       "pii_leak": 0
     },
@@ -122,7 +122,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 10420,
+      "latency_ms": 9990,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -132,7 +132,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 14233,
+      "latency_ms": 13863,
       "conflict_ok": true,
       "pii_leak": 0
     },
@@ -142,7 +142,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 10996,
+      "latency_ms": 9392,
       "conflict_ok": true,
       "pii_leak": 0
     },
@@ -152,7 +152,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 11379,
+      "latency_ms": 11997,
       "conflict_ok": true,
       "pii_leak": 0
     },
@@ -162,7 +162,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 8722,
+      "latency_ms": 8556,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -172,7 +172,7 @@
       "expect": "answered",
       "got": "not_found",
       "outcome_ok": false,
-      "latency_ms": 4127,
+      "latency_ms": 4138,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -182,7 +182,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 10476,
+      "latency_ms": 9727,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -192,7 +192,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 10453,
+      "latency_ms": 10499,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -202,7 +202,7 @@
       "expect": "escalated",
       "got": "escalated",
       "outcome_ok": true,
-      "latency_ms": 11528,
+      "latency_ms": 11741,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -212,7 +212,7 @@
       "expect": "escalated",
       "got": "escalated",
       "outcome_ok": true,
-      "latency_ms": 10087,
+      "latency_ms": 9938,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -222,7 +222,7 @@
       "expect": "escalated",
       "got": "escalated",
       "outcome_ok": true,
-      "latency_ms": 14584,
+      "latency_ms": 13747,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -232,7 +232,7 @@
       "expect": "escalated",
       "got": "escalated",
       "outcome_ok": true,
-      "latency_ms": 4030,
+      "latency_ms": 4028,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -242,7 +242,7 @@
       "expect": "escalated",
       "got": "escalated",
       "outcome_ok": true,
-      "latency_ms": 10263,
+      "latency_ms": 8849,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -252,7 +252,7 @@
       "expect": "answered",
       "got": "answered",
       "outcome_ok": true,
-      "latency_ms": 14715,
+      "latency_ms": 14123,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -260,9 +260,9 @@
       "id": "pii-02",
       "category": "pii",
       "expect": "answered",
-      "got": "escalated",
-      "outcome_ok": false,
-      "latency_ms": 12270,
+      "got": "answered",
+      "outcome_ok": true,
+      "latency_ms": 11977,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -272,7 +272,7 @@
       "expect": "out_of_scope",
       "got": "out_of_scope",
       "outcome_ok": true,
-      "latency_ms": 3887,
+      "latency_ms": 3870,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -282,7 +282,7 @@
       "expect": "out_of_scope",
       "got": "out_of_scope",
       "outcome_ok": true,
-      "latency_ms": 3778,
+      "latency_ms": 3809,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -292,7 +292,7 @@
       "expect": "refused",
       "got": "refused",
       "outcome_ok": true,
-      "latency_ms": 3835,
+      "latency_ms": 3907,
       "conflict_ok": null,
       "pii_leak": 0
     },
@@ -302,7 +302,7 @@
       "expect": "refused",
       "got": "refused",
       "outcome_ok": true,
-      "latency_ms": 3880,
+      "latency_ms": 3844,
       "conflict_ok": null,
       "pii_leak": 0
     }
